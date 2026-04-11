@@ -23,7 +23,7 @@
   .directions{background:#f4f8ff;border:1px solid #d3dff3;border-radius:8px;padding:16px;font-size:14px;line-height:1.65}
   button{background:#5E85C4;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:bold;cursor:pointer}
   .status{margin-top:14px;font-size:14px}
-  .success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.6}
+  .success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.7}
   .footer{padding:18px 22px;text-align:center;font-size:13px;line-height:1.6;color:#666;border-top:1px solid #d9e2f0}
   .footer-small{font-size:10px;line-height:1.5;color:#888;margin-top:12px}
   .previewWrap{display:none;margin-top:10px}
@@ -44,7 +44,7 @@
     <div class="section">
       <div class="directions">
         <strong>Directions:</strong><br>
-        Enter your name, unit number, email address, payment type, payment number, and the date of drop off.<br>
+        Enter your name, unit number, email address, payment type, payment number, amount, and the date of drop off.<br>
         Then upload a clear picture of the front of the check or money order before submitting.
       </div>
 
@@ -80,6 +80,11 @@
             <input id="paymentNumber" name="paymentNumber" maxlength="40" required>
             <div class="hint">Letters, numbers, and hyphens are allowed.</div>
           </div>
+          <div>
+            <label for="amount">Amount</label>
+            <input id="amount" name="amount" inputmode="decimal" placeholder="$0.00" required>
+            <div class="hint">Enter the exact amount shown on the payment.</div>
+          </div>
           <div class="full">
             <label for="paymentImage">Photo of Front of Check / Money Order</label>
             <input id="paymentImage" name="paymentImage" type="file" accept="image/*" capture="environment" required>
@@ -95,7 +100,9 @@
 
       <div id="successBox" class="success">
         <strong>Thank you.</strong><br>
-        Your drop off was recorded successfully. Please check your email for your confirmation copy.
+        Your drop off was recorded successfully. Please check your email for your confirmation copy.<br>
+        Please ensure your payment is placed fully inside the drop box and that the door is fully closed.<br>
+        Payments left after hours are generally processed the next business day.
       </div>
     </div>
 
@@ -114,7 +121,7 @@
 </div>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
+const WEB_APP_URL = "REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
 
 const unitSelect = document.getElementById("unitNumber");
@@ -131,6 +138,20 @@ function validEmail(email) {
 function validPaymentNumber(value) {
   return /^[A-Za-z0-9-]+$/.test(value);
 }
+function parseAmountToNumber(value) {
+  const cleaned = String(value || "").replace(/[^\d.]/g, "");
+  if (!cleaned) return null;
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : null;
+}
+function formatAmountInput(el) {
+  const num = parseAmountToNumber(el.value);
+  if (num === null) {
+    el.value = "";
+    return;
+  }
+  el.value = "$" + num.toFixed(2);
+}
 function status(msg, good=false) {
   const el = document.getElementById("status");
   el.textContent = msg;
@@ -142,6 +163,9 @@ function fireMetric(type) {
   fetch(url, { method: "GET", mode: "no-cors", keepalive: true }).catch(() => {});
 }
 fireMetric("page_view");
+
+const amountInput = document.getElementById("amount");
+amountInput.addEventListener("blur", () => formatAmountInput(amountInput));
 
 let paymentImageData = "";
 const paymentImage = document.getElementById("paymentImage");
@@ -195,6 +219,8 @@ function fileToCompressedDataUrl(file, maxSize, quality) {
 document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
+  const amountNum = parseAmountToNumber(form.amount.value);
+
   const data = {
     fullName: form.fullName.value.trim(),
     email: form.email.value.trim(),
@@ -202,6 +228,7 @@ document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
     paymentDate: form.paymentDate.value,
     paymentType: form.paymentType.value,
     paymentNumber: form.paymentNumber.value.trim(),
+    amount: amountNum !== null ? amountNum.toFixed(2) : "",
     paymentImage: paymentImageData
   };
 
@@ -215,6 +242,10 @@ document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
   }
   if (!validPaymentNumber(data.paymentNumber)) {
     status("Payment number may contain only letters, numbers, and hyphens.");
+    return;
+  }
+  if (!data.amount) {
+    status("Please enter a valid payment amount.");
     return;
   }
   if (!data.paymentImage) {
