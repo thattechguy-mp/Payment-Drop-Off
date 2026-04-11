@@ -83,7 +83,7 @@
           <div class="full">
             <label for="paymentImage">Photo of Front of Check / Money Order</label>
             <input id="paymentImage" name="paymentImage" type="file" accept="image/*" capture="environment" required>
-            <div class="hint">Please upload a clear photo of the front only.</div>
+            <div class="hint">Please upload a clear photo of the front only. Images are compressed automatically before upload.</div>
             <div class="previewWrap" id="previewWrap"><img id="imagePreview" alt="Preview"></div>
           </div>
           <div class="full">
@@ -114,7 +114,7 @@
 </div>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
+const WEB_APP_URL = "REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
 
 const unitSelect = document.getElementById("unitNumber");
@@ -153,7 +153,7 @@ paymentImage.addEventListener("change", async (e) => {
     return;
   }
   try {
-    paymentImageData = await fileToCompressedDataUrl(file, 1600, 0.82);
+    paymentImageData = await fileToCompressedDataUrl(file, 900, 0.58);
     const preview = document.getElementById("imagePreview");
     preview.src = paymentImageData;
     document.getElementById("previewWrap").style.display = "block";
@@ -179,6 +179,8 @@ function fileToCompressedDataUrl(file, maxSize, quality) {
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
         resolve(canvas.toDataURL("image/jpeg", quality));
       };
@@ -231,7 +233,6 @@ document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
     });
     const json = await res.json();
     if (json.ok) {
-      fireMetric("submission_success");
       form.style.display = "none";
       document.getElementById("successBox").style.display = "block";
       status("");
