@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Mark Point - That Tech Guy">
+<meta name="description" content="Payment Drop Off dashboard for Right Move Storage - Aldine">
+<title>Drop Off Dashboard</title>
+<style>
+  body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#243142}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  .header{background:#fff;border:1px solid #d9e2f0;border-radius:12px;padding:20px 24px;margin-bottom:18px}
+  .header h1{margin:0;font-size:32px}
+  .sub{margin-top:8px;color:#5f6b7a;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;padding:18px}
+  .metric-label{font-size:13px;color:#667085;margin-bottom:8px}
+  .metric-value{font-size:30px;font-weight:700}
+  .panel{background:#fff;border:1px solid #d9e2f0;border-radius:12px;padding:18px}
+  .controls{display:grid;grid-template-columns:1.4fr 1fr 1fr 180px;gap:12px;margin-bottom:16px}
+  input,select,button{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;box-sizing:border-box}
+  button{background:#5E85C4;color:#fff;border:0;font-weight:700;cursor:pointer}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:12px 10px;border-bottom:1px solid #e6edf5;text-align:left;font-size:14px;vertical-align:top}
+  th{background:#f8fbff;font-weight:700}
+  .mono{font-family:Courier New,monospace}
+  .small{font-size:12px;color:#667085}
+  .pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef4ff;color:#294f8d;font-size:12px;font-weight:700}
+  .empty{padding:18px 0;color:#667085}
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .controls{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Drop Off Dashboard</h1>
+    <div class="sub">Right Move Storage – Aldine • Payment Drop Off activity, metrics, and recent submissions</div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="metric-label">Page Views</div><div class="metric-value" id="mPageViews">0</div></div>
+    <div class="card"><div class="metric-label">Submission Attempts</div><div class="metric-value" id="mAttempts">0</div></div>
+    <div class="card"><div class="metric-label">Successful Submissions</div><div class="metric-value" id="mSuccess">0</div></div>
+    <div class="card"><div class="metric-label">Submission Errors</div><div class="metric-value" id="mErrors">0</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="controls">
+      <input id="searchBox" placeholder="Search customer, unit, confirmation ID, or payment number">
+      <select id="paymentTypeFilter">
+        <option value="">All payment types</option>
+        <option value="Check">Check</option>
+        <option value="Money Order">Money Order</option>
+      </select>
+      <select id="sortOrder">
+        <option value="desc">Newest first</option>
+        <option value="asc">Oldest first</option>
+      </select>
+      <button id="refreshBtn">Refresh</button>
+    </div>
+
+    <div class="small" style="margin-bottom:12px;">
+      Use the “Suggested SiteLink Memo” from the office email when posting transactions.
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Submitted</th>
+          <th>Confirmation ID</th>
+          <th>Customer</th>
+          <th>Unit</th>
+          <th>Type</th>
+          <th>Payment #</th>
+          <th>Amount</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="emptyState" style="display:none;">No submissions found.</div>
+  </div>
+</div>
+
+<script>
+const DASHBOARD_API_URL = "REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL?action=dashboard&token=REPLACE_WITH_YOUR_DASHBOARD_TOKEN";
+
+let dashboardData = { metrics: {}, submissions: [] };
+
+async function loadDashboard() {
+  const rows = document.getElementById("rows");
+  rows.innerHTML = '<tr><td colspan="8">Loading...</td></tr>';
+
+  try {
+    const res = await fetch(DASHBOARD_API_URL, { method: "GET", mode: "cors" });
+    const json = await res.json();
+    if (!json.ok) {
+      rows.innerHTML = '<tr><td colspan="8">Dashboard request failed.</td></tr>';
+      return;
+    }
+
+    dashboardData = json;
+    renderMetrics();
+    renderRows();
+  } catch (err) {
+    rows.innerHTML = '<tr><td colspan="8">Could not load dashboard data.</td></tr>';
+  }
+}
+
+function renderMetrics() {
+  const metrics = dashboardData.metrics || {};
+  document.getElementById("mPageViews").textContent = metrics.metric_page_view || 0;
+  document.getElementById("mAttempts").textContent = metrics.metric_submission_attempt || 0;
+  document.getElementById("mSuccess").textContent = metrics.metric_submission_success || 0;
+  document.getElementById("mErrors").textContent = metrics.metric_submission_error || 0;
+}
+
+function renderRows() {
+  const rowsEl = document.getElementById("rows");
+  const empty = document.getElementById("emptyState");
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const type = document.getElementById("paymentTypeFilter").value;
+  const sort = document.getElementById("sortOrder").value;
+
+  let items = Array.isArray(dashboardData.submissions) ? [...dashboardData.submissions] : [];
+
+  if (q) {
+    items = items.filter(item => {
+      return [
+        item.submittedAt,
+        item.confirmationId,
+        item.fullName,
+        item.unitNumber,
+        item.paymentType,
+        item.paymentNumber,
+        item.amount,
+        item.email
+      ].join(" ").toLowerCase().includes(q);
+    });
+  }
+
+  if (type) {
+    items = items.filter(item => item.paymentType === type);
+  }
+
+  items.sort((a, b) => {
+    const av = (a.submittedAt || "");
+    const bv = (b.submittedAt || "");
+    return sort === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+
+  if (!items.length) {
+    rowsEl.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+  rowsEl.innerHTML = items.map(item => `
+    <tr>
+      <td>${escapeHtml(item.submittedAt || "")}</td>
+      <td class="mono">${escapeHtml(item.confirmationId || "")}</td>
+      <td>${escapeHtml(item.fullName || "")}</td>
+      <td class="mono">${escapeHtml(item.unitNumber || "")}</td>
+      <td><span class="pill">${escapeHtml(item.paymentType || "")}</span></td>
+      <td class="mono">${escapeHtml(item.paymentNumber || "")}</td>
+      <td>$${escapeHtml(item.amount || "")}</td>
+      <td>${escapeHtml(item.email || "")}</td>
+    </tr>
+  `).join("");
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+document.getElementById("searchBox").addEventListener("input", renderRows);
+document.getElementById("paymentTypeFilter").addEventListener("change", renderRows);
+document.getElementById("sortOrder").addEventListener("change", renderRows);
+document.getElementById("refreshBtn").addEventListener("click", loadDashboard);
+
+loadDashboard();
+</script>
+</body>
+</html>
