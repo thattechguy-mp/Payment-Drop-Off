@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Mark Point - That Tech Guy">
+<meta name="description" content="Payment drop off form for Right Move Storage - Aldine">
+<title>Drop Off</title>
+<style>
+  body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#2d3748}
+  .wrap{max-width:840px;margin:0 auto;padding:20px}
+  .card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+  .header{padding:20px;text-align:center;border-bottom:1px solid #d9e2f0}
+  .hero{padding:24px;background:#4f81bc;color:#fff;text-align:center}
+  .hero h1{margin:0;font-size:30px;line-height:1.2}
+  .hero p{margin:10px 0 0;font-size:16px;line-height:1.5}
+  .section{padding:22px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .full{grid-column:1 / -1}
+  label{display:block;font-size:14px;font-weight:bold;margin:0 0 6px}
+  input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px;box-sizing:border-box;background:#fff}
+  .hint{font-size:12px;color:#6b7280;line-height:1.5;margin-top:4px}
+  .directions{background:#f4f8ff;border:1px solid #d3dff3;border-radius:8px;padding:16px;font-size:14px;line-height:1.65}
+  button{background:#5E85C4;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:bold;cursor:pointer}
+  .status{margin-top:14px;font-size:14px}
+  .success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.6}
+  .footer{padding:18px 22px;text-align:center;font-size:13px;line-height:1.6;color:#666;border-top:1px solid #d9e2f0}
+  .footer-small{font-size:10px;line-height:1.5;color:#888;margin-top:12px}
+  .previewWrap{display:none;margin-top:10px}
+  .previewWrap img{max-width:100%;max-height:240px;border:1px solid #cbd5e1;border-radius:8px}
+  @media (max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="header">
+      <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage" style="width:190px;max-width:100%;height:auto;border:0;">
+    </div>
+    <div class="hero">
+      <h1>Drop Off</h1>
+      <p>Complete this quick form when leaving a check or money order in the drop box while the office is closed.</p>
+    </div>
+    <div class="section">
+      <div class="directions">
+        <strong>Directions:</strong><br>
+        Enter your name, unit number, email address, payment type, payment number, and the date of drop off.<br>
+        Then upload a clear picture of the front of the check or money order before submitting.
+      </div>
+
+      <form id="dropOffForm" style="margin-top:18px;">
+        <div class="grid">
+          <div>
+            <label for="fullName">Customer Full Name</label>
+            <input id="fullName" name="fullName" autocomplete="name" required>
+          </div>
+          <div>
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+            <div class="hint">A confirmation copy will be emailed to this address.</div>
+          </div>
+          <div>
+            <label for="unitNumber">Unit Number</label>
+            <select id="unitNumber" name="unitNumber" required></select>
+          </div>
+          <div>
+            <label for="paymentDate">Date</label>
+            <input id="paymentDate" name="paymentDate" type="date" required>
+          </div>
+          <div>
+            <label for="paymentType">Type of Payment</label>
+            <select id="paymentType" name="paymentType" required>
+              <option value="">Select one</option>
+              <option value="Check">Check</option>
+              <option value="Money Order">Money Order</option>
+            </select>
+          </div>
+          <div>
+            <label for="paymentNumber">Check / Money Order Number</label>
+            <input id="paymentNumber" name="paymentNumber" maxlength="40" required>
+            <div class="hint">Letters, numbers, and hyphens are allowed.</div>
+          </div>
+          <div class="full">
+            <label for="paymentImage">Photo of Front of Check / Money Order</label>
+            <input id="paymentImage" name="paymentImage" type="file" accept="image/*" capture="environment" required>
+            <div class="hint">Please upload a clear photo of the front only.</div>
+            <div class="previewWrap" id="previewWrap"><img id="imagePreview" alt="Preview"></div>
+          </div>
+          <div class="full">
+            <button type="submit">Submit Drop Off</button>
+            <div id="status" class="status"></div>
+          </div>
+        </div>
+      </form>
+
+      <div id="successBox" class="success">
+        <strong>Thank you.</strong><br>
+        Your drop off was recorded successfully. Please check your email for your confirmation copy.
+      </div>
+    </div>
+
+    <div class="footer">
+      <strong>Right Move Storage – Aldine</strong><br>
+      21667 Aldine Westfield Rd<br>
+      Humble, TX 77338<br>
+      281-233-0400<br>
+      aldine@rightmovestorage.com
+      <div class="footer-small">
+        This system and template were designed and developed by <strong>Mark Point</strong> of <strong>That Tech Guy</strong>.<br>
+        © 2026 That Tech Guy. All Rights Reserved.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
+const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
+
+const unitSelect = document.getElementById("unitNumber");
+unitSelect.appendChild(new Option("Select unit", ""));
+for (let i = 1; i <= 622; i++) {
+  const unit = String(i).padStart(5, "0");
+  if (UNAVAILABLE_UNITS.has(unit)) continue;
+  unitSelect.appendChild(new Option(unit, unit));
+}
+
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+function validPaymentNumber(value) {
+  return /^[A-Za-z0-9-]+$/.test(value);
+}
+function status(msg, good=false) {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  el.style.color = good ? "#0b7a34" : "#b91c1c";
+}
+function fireMetric(type) {
+  if (!WEB_APP_URL || WEB_APP_URL.indexOf("REPLACE_WITH") === 0) return;
+  const url = WEB_APP_URL + "?action=metric&type=" + encodeURIComponent(type) + "&ts=" + Date.now();
+  fetch(url, { method: "GET", mode: "no-cors", keepalive: true }).catch(() => {});
+}
+fireMetric("page_view");
+
+let paymentImageData = "";
+const paymentImage = document.getElementById("paymentImage");
+paymentImage.addEventListener("change", async (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) {
+    paymentImageData = "";
+    document.getElementById("previewWrap").style.display = "none";
+    return;
+  }
+  try {
+    paymentImageData = await fileToCompressedDataUrl(file, 1600, 0.82);
+    const preview = document.getElementById("imagePreview");
+    preview.src = paymentImageData;
+    document.getElementById("previewWrap").style.display = "block";
+  } catch (err) {
+    paymentImageData = "";
+    document.getElementById("previewWrap").style.display = "none";
+    status("Could not process the image. Please try another photo.");
+  }
+});
+
+function fileToCompressedDataUrl(file, maxSize, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        const ratio = Math.min(1, maxSize / Math.max(width, height));
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    fullName: form.fullName.value.trim(),
+    email: form.email.value.trim(),
+    unitNumber: form.unitNumber.value,
+    paymentDate: form.paymentDate.value,
+    paymentType: form.paymentType.value,
+    paymentNumber: form.paymentNumber.value.trim(),
+    paymentImage: paymentImageData
+  };
+
+  if (!data.unitNumber || UNAVAILABLE_UNITS.has(data.unitNumber)) {
+    status("Please select a valid available unit.");
+    return;
+  }
+  if (!validEmail(data.email)) {
+    status("Please enter a valid email address.");
+    return;
+  }
+  if (!validPaymentNumber(data.paymentNumber)) {
+    status("Payment number may contain only letters, numbers, and hyphens.");
+    return;
+  }
+  if (!data.paymentImage) {
+    status("Please upload a clear photo of the front of the check or money order.");
+    return;
+  }
+
+  status("Submitting...", true);
+
+  try {
+    const res = await fetch(WEB_APP_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      fireMetric("submission_success");
+      form.style.display = "none";
+      document.getElementById("successBox").style.display = "block";
+      status("");
+    } else {
+      status(json.error || "Submission failed. Please try again.");
+    }
+  } catch (err) {
+    status("Submission failed. Please try again.");
+  }
+});
+</script>
+</body>
+</html>
