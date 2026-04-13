@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verify Unit</title>
+<style>
+body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#243142}.wrap{max-width:840px;margin:0 auto;padding:20px}.card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;overflow:hidden}.hero{padding:24px;background:#4f81bc;color:#fff;text-align:center}.section{padding:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1 / -1}input,textarea,button{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px;box-sizing:border-box}textarea{min-height:120px}
+.radios{display:flex;gap:12px;flex-wrap:wrap}.radios label{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+.warn{background:#fff5f5;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:14px;line-height:1.6}.hint{font-size:12px;color:#667085;margin-top:4px}
+.previewWrap{display:none;margin-top:10px}.previewWrap img{max-width:100%;max-height:260px;border:1px solid #cbd5e1;border-radius:8px}.status{margin-top:14px;font-size:14px}
+.success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.7}button{background:#5E85C4;color:#fff;border:0;font-weight:700;cursor:pointer}
+@media (max-width:700px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap"><div class="card"><div class="hero"><h1 style="margin:0;">Verify Unit</h1></div><div class="section">
+<form id="verifyForm"><div class="warn">Use a .5 camera focal length when possible so the empty unit and unit number are both visible in the verification photo.</div>
+<div class="grid" style="margin-top:16px;">
+<div><label>Customer Name</label><input id="customerName" readonly></div>
+<div><label>Unit Number</label><input id="unitNumber" readonly></div>
+<div><label>Customer Email</label><input id="customerEmail" readonly></div>
+<div><label>Notice Type</label><input id="noticeType" readonly></div>
+<div class="full"><label>Did the customer / buyer clean the unit completely?</label><div class="radios"><label><input type="radio" name="cleanedYes" value="true" required> Yes</label><label><input type="radio" name="cleanedYes" value="false"> No</label></div></div>
+<div class="full"><label>Did the customer / buyer remove the lock?</label><div class="radios"><label><input type="radio" name="lockRemovedYes" value="true" required> Yes</label><label><input type="radio" name="lockRemovedYes" value="false"> No</label></div></div>
+<div class="full"><label for="managerPhoto">Manager Verification Photo</label><input id="managerPhoto" type="file" accept="image/*" capture="environment" required><div class="hint">If any answer is No, photograph the issue clearly from outside the unit using the same wide view.</div><div class="previewWrap" id="photoPreviewWrap"><img id="photoPreview" alt="Preview"></div></div>
+<div class="full"><label for="managerNotes">Manager Notes</label><textarea id="managerNotes" placeholder="Optional notes for office follow up"></textarea></div>
+<div class="full"><button type="submit">Submit Verification</button><div id="status" class="status"></div></div>
+</div></form>
+<div id="successBox" class="success">Verification submitted successfully.</div>
+</div></div></div>
+<script>
+const WEB_APP_URL="REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+const params=new URLSearchParams(window.location.search);
+document.getElementById("customerName").value=params.get("customerName")||"";
+document.getElementById("unitNumber").value=params.get("unitNumber")||"";
+document.getElementById("customerEmail").value=params.get("customerEmail")||"";
+document.getElementById("noticeType").value=params.get("noticeType")||"";
+let managerPhotoData="";
+function status(m,g=false){const el=document.getElementById("status");el.textContent=m;el.style.color=g?"#0b7a34":"#b91c1c";}
+function fileToCompressedDataUrl(file,maxSize,quality){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{let width=img.width,height=img.height;const ratio=Math.min(1,maxSize/Math.max(width,height));width=Math.round(width*ratio);height=Math.round(height*ratio);const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;const ctx=canvas.getContext("2d");ctx.fillStyle="#ffffff";ctx.fillRect(0,0,width,height);ctx.drawImage(img,0,0,width,height);resolve(canvas.toDataURL("image/jpeg",0.68));};img.onerror=reject;img.src=reader.result;};reader.onerror=reject;reader.readAsDataURL(file);});}
+document.getElementById("managerPhoto").addEventListener("change",async e=>{const file=e.target.files&&e.target.files[0];if(!file) return;managerPhotoData=await fileToCompressedDataUrl(file,1200,0.68);document.getElementById("photoPreview").src=managerPhotoData;document.getElementById("photoPreviewWrap").style.display="block";});
+document.getElementById("verifyForm").addEventListener("submit",async e=>{e.preventDefault();if(!managerPhotoData){status("Please upload the manager verification photo.");return;}
+const cleanedYes=document.querySelector('input[name="cleanedYes"]:checked')?.value;
+const lockRemovedYes=document.querySelector('input[name="lockRemovedYes"]:checked')?.value;
+const payload={action:'manager_verify',token:params.get('token')||'',customerName:params.get('customerName')||'',customerEmail:params.get('customerEmail')||'',unitNumber:params.get('unitNumber')||'',noticeType:params.get('noticeType')||'',confirmationId:params.get('confirmationId')||'',cleanedYes:cleanedYes,lockRemovedYes:lockRemovedYes,managerNotes:document.getElementById("managerNotes").value.trim(),managerPhoto:managerPhotoData};
+status("Submitting...",true);
+try{const res=await fetch(WEB_APP_URL,{method:"POST",mode:"cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});const json=await res.json();if(json.ok){document.getElementById("verifyForm").style.display="none";document.getElementById("successBox").style.display="block";status("");}else{status(json.error||"Submission failed.");}}catch(err){status("Submission failed.");}});
+</script></body></html>
