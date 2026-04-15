@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Mark Point - That Tech Guy">
 <meta name="description" content="Payment drop off form for Right Move Storage - Aldine">
-<title>Drop Off</title>
+<title>🗳️ Payment Drop Off</title>
 <style>
   body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#2d3748}
   .wrap{max-width:840px;margin:0 auto;padding:20px}
@@ -38,14 +38,14 @@
       <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage" style="width:190px;max-width:100%;height:auto;border:0;">
     </div>
     <div class="hero">
-      <h1>Drop Off</h1>
+      <h1>🗳️ Payment Drop Off</h1>
       <p>Complete this quick form when leaving a check or money order in the drop box while the office is closed.</p>
     </div>
     <div class="section">
       <div class="directions">
         <strong>Directions:</strong><br>
-        Enter your name, unit number, email address, payment type, payment number, amount, and the date of drop off.<br>
-        Then upload a clear picture of the front of the check or money order before submitting.
+        Enter your name, unit number, email address, payment type, check or money order number, payment amount, and the date of drop off.<br>
+        Take a clear picture picture of the front of the check or money order and upload it when submitting this form.
       </div>
 
       <form id="dropOffForm" style="margin-top:18px;">
@@ -78,21 +78,21 @@
           <div>
             <label for="paymentNumber">Check / Money Order Number</label>
             <input id="paymentNumber" name="paymentNumber" maxlength="40" required>
-            <div class="hint">Letters, numbers, and hyphens are allowed.</div>
+            <div class="hint">Please enter the check or money order number displayed.</div>
           </div>
           <div>
             <label for="amount">Amount</label>
             <input id="amount" name="amount" inputmode="decimal" placeholder="$0.00" required>
-            <div class="hint">Enter the exact amount shown on the payment.</div>
+            <div class="hint">Enter the exact amount shown on the check or money order.</div>
           </div>
           <div class="full">
             <label for="paymentImage">Photo of Front of Check / Money Order</label>
             <input id="paymentImage" name="paymentImage" type="file" accept="image/*" capture="environment" required>
-            <div class="hint">Please upload a clear photo of the front only. Images are compressed automatically before upload.</div>
+            <div class="hint">📷 Please take a clear photo of the front of the check or money order and upload it here.</div>
             <div class="previewWrap" id="previewWrap"><img id="imagePreview" alt="Preview"></div>
           </div>
           <div class="full">
-            <button type="submit">Submit Drop Off</button>
+            <button type="submit">Submit Payment Drop Off</button>
             <div id="status" class="status"></div>
           </div>
         </div>
@@ -100,8 +100,8 @@
 
       <div id="successBox" class="success">
         <strong>Thank you.</strong><br>
-        Your drop off was recorded successfully. Please check your email for your confirmation copy.<br>
-        Please ensure your payment is placed fully inside the drop box and that the door is fully closed.<br>
+        Your payment drop off was recorded successfully. Please check your email for your confirmation copy.<br>
+        Please ensure your payment is placed fully inside the drop box and that the lid is fully closed.<br>
         Payments left after hours are generally processed the next business day.
       </div>
     </div>
