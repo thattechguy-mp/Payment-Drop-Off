@@ -69,7 +69,7 @@ button.secondary{background:#e7eef9;color:#1f4e78}
           </div>
 
           <div class="full hidden" id="vacateTopNotice">
-            <div class="warn"><strong>10 Days Notice Required</strong></div>
+            <div class="warn"><strong>📅 10 Days Notice Required</strong></div>
           </div>
 
           <div>
@@ -132,7 +132,7 @@ button.secondary{background:#e7eef9;color:#1f4e78}
           </div>
 
           <div class="full hidden" id="signatureWrap">
-            <label>Signature</label>
+            <label>✍️ Signature X</label>
             <div class="sigbox"><canvas id="signatureCanvas"></canvas></div>
             <div class="actions">
               <button type="button" class="secondary" id="clearSignature">Clear Signature</button>
@@ -219,9 +219,9 @@ function toggleSections(){
   clearCanvas();
 
   if (type === "Vacate Notice") {
-    title.textContent = "Vacate Notice";
+    title.textContent = "📦 Vacate Notice";
     subtitle.textContent = "Provide your planned move out date and required acknowledgements.";
-    intro.innerHTML = 'In order to terminate my Self-Service Rental Agreement, I understand I must give <strong>10 days written notice</strong>.<br>(Refer to paragraphs 9-10 of your Self-Service Rental Agreement for more details.)<br><br>To Whom It May Concern or representative of Aldine Storage, You are hereby notified that I, the undersigned will vacate storage space before or by the selected date.<br>I agree that my space will be swept, empty, and in good condition with my lock removed.';
+    intro.innerHTML = 'In order to terminate my Self-Service Rental Agreement, I understand I must give <strong>10 days written notice</strong>.<br>(Refer to ¶ paragraphs 9-10 of your Self-Service Rental Agreement for more details.)<br><br>To Whom It May Concern or representative of Aldine Storage, You are hereby notified that I, the undersigned will vacate storage space before or by the selected date.<br>I agree that my space will be swept, empty, and in good condition with my lock removed.';
     moveDateWrap.classList.remove("hidden");
     vacateTopNotice.classList.remove("hidden");
     vacateChecklist.classList.remove("hidden");
