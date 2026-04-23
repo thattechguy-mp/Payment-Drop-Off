@@ -212,6 +212,9 @@ textarea{
   justify-content:center;
   z-index:9999;
   padding:16px;
+  overflow:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
 .confirm-card,.crop-card{
   width:min(520px,100%);
@@ -220,7 +223,12 @@ textarea{
   box-shadow:0 20px 44px rgba(15,23,42,.24);
   overflow:hidden;
 }
-.crop-card{width:min(980px,100%)}
+.crop-card{
+  width:min(980px,100%);
+  max-height:calc(100vh - 24px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
 .confirm-head,.crop-head{
   padding:18px 20px;
   background:linear-gradient(135deg,var(--blue2),var(--navy));
@@ -263,6 +271,9 @@ textarea{
   width:100%;
   min-height:420px;
   overflow:auto;
+  max-height:65vh;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
 #cropCanvas{
   width:100%;
@@ -301,6 +312,33 @@ textarea{
   .btn{width:100%}
   .hero-graphic{text-align:center}
   .hero-graphic svg{margin:0 auto}
+  .crop-modal{
+    align-items:flex-start;
+    padding:8px;
+  }
+  .crop-card{
+    width:100%;
+    max-height:calc(100vh - 16px);
+    margin:0;
+    border-radius:16px;
+  }
+  .crop-body{
+    padding:12px 12px 8px;
+  }
+  .crop-canvas-wrap{
+    min-height:280px;
+    max-height:50vh;
+  }
+  .crop-actions{
+    position:sticky;
+    bottom:0;
+    background:#fff;
+    padding:12px;
+    border-top:1px solid #d0d5dd;
+  }
+  .crop-side{
+    display:none;
+  }
 }
 </style>
 <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
@@ -427,13 +465,14 @@ textarea{
     <div class="crop-head">Adjust Payment Image Crop</div>
     <div class="crop-body">
       <div class="crop-note">
-        The form will try to detect the paper edges automatically. If the corners are not accurate, drag the four markers to the document corners, then click <strong>Apply Crop</strong>.
+        The form will try to detect the paper edges automatically. On mobile, drag the four corner markers on the image itself. If needed, scroll inside the crop window, then tap <strong>Apply Crop</strong> when the corners match the document.
       </div>
       <div class="crop-grid">
         <div class="crop-stage">
           <div class="crop-canvas-wrap">
             <canvas id="cropCanvas"></canvas>
           </div>
+          <div class="small-note">If the preview area seems still, drag directly on a corner marker. On phones, the crop window now scrolls independently from the form behind it.</div>
         </div>
         <div class="crop-side">
           <h4>Current Crop Result</h4>
