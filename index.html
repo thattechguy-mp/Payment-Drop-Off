@@ -2,278 +2,953 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Mark Point - That Tech Guy">
-<meta name="description" content="Payment drop off form for Right Move Storage - Aldine">
-<title>🗳️ Payment Drop Off</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Payment Drop Off</title>
 <style>
-  body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#2d3748}
-  .wrap{max-width:840px;margin:0 auto;padding:20px}
-  .card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
-  .header{padding:20px;text-align:center;border-bottom:1px solid #d9e2f0}
-  .hero{padding:24px;background:#4f81bc;color:#fff;text-align:center}
-  .hero h1{margin:0;font-size:30px;line-height:1.2}
-  .hero p{margin:10px 0 0;font-size:16px;line-height:1.5}
-  .section{padding:22px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .full{grid-column:1 / -1}
-  label{display:block;font-size:14px;font-weight:bold;margin:0 0 6px}
-  input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px;box-sizing:border-box;background:#fff}
-  .hint{font-size:12px;color:#6b7280;line-height:1.5;margin-top:4px}
-  .directions{background:#f4f8ff;border:1px solid #d3dff3;border-radius:8px;padding:16px;font-size:14px;line-height:1.65}
-  button{background:#5E85C4;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:bold;cursor:pointer}
-  .status{margin-top:14px;font-size:14px}
-  .success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.7}
-  .footer{padding:18px 22px;text-align:center;font-size:13px;line-height:1.6;color:#666;border-top:1px solid #d9e2f0}
-  .footer-small{font-size:10px;line-height:1.5;color:#888;margin-top:12px}
-  .previewWrap{display:none;margin-top:10px}
-  .previewWrap img{max-width:100%;max-height:240px;border:1px solid #cbd5e1;border-radius:8px}
-  @media (max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:24px}}
+:root{
+  --bg:#f3f6fb;
+  --card:#ffffff;
+  --line:#d0d5dd;
+  --text:#1f2937;
+  --muted:#667085;
+  --blue:#5E85C4;
+  --blue2:#00A1FB;
+  --navy:#241f51;
+  --green:#89F895;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+.wrapper{
+  width:min(980px, calc(100% - 24px));
+  margin:18px auto 24px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 12px 28px rgba(16,24,40,.08);
+}
+.hero{
+  background:linear-gradient(135deg,var(--blue2) 0%,var(--blue) 58%,var(--navy) 100%);
+  color:#fff;
+  padding:22px 26px 18px;
+}
+.hero-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+}
+.hero-left{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  flex:1;
+}
+.hero-logo{
+  width:170px;
+  height:auto;
+  display:block;
+}
+.hero-copy{
+  flex:1;
+}
+.badge{
+  display:inline-block;
+  background:var(--green);
+  color:#17324d;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  border-radius:999px;
+  padding:8px 14px;
+  margin-bottom:10px;
+}
+.hero h1{
+  margin:0;
+  font-size:34px;
+  line-height:1.08;
+}
+.hero p{
+  margin:8px 0 0;
+  color:#eef6ff;
+  font-size:15px;
+  line-height:1.6;
+  max-width:620px;
+}
+.hero-graphic{
+  flex:0 0 126px;
+  text-align:right;
+}
+.hero-graphic svg{
+  width:120px;
+  height:auto;
+  display:block;
+  margin-left:auto;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.22));
+}
+.content{
+  padding:22px 24px 18px;
+}
+.notice{
+  border:1px solid #cfe7f8;
+  border-left:5px solid var(--blue2);
+  border-radius:14px;
+  background:#f8fbff;
+  padding:14px 16px;
+  color:#344054;
+  font-size:14px;
+  line-height:1.55;
+  margin-bottom:18px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px 18px;
+}
+.field-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.field-wrap.full{grid-column:1 / -1}
+label{
+  font-weight:700;
+  font-size:14px;
+  color:#344054;
+}
+.req{color:#b42318}
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  font-size:16px;
+  padding:14px 15px;
+  color:#111827;
+  font-family:inherit;
+}
+select{appearance:auto}
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+.readonly{background:#f8fafc}
+.small-note{
+  margin-top:6px;
+  font-size:12px;
+  line-height:1.45;
+  color:var(--muted);
+}
+.preview-shell{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fcfcfd;
+  padding:16px;
+  margin-top:20px;
+}
+.preview-title{
+  font-size:15px;
+  font-weight:700;
+  margin:0 0 12px;
+  color:#344054;
+}
+.preview-image{
+  width:100%;
+  max-width:640px;
+  max-height:380px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  margin-top:20px;
+}
+.btn{
+  border:none;
+  border-radius:14px;
+  padding:15px 24px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn-secondary{background:#e5e7eb;color:#111827}
+.btn-primary{background:var(--blue2);color:#fff}
+.btn-outline{background:#fff;color:#111827;border:1px solid var(--line)}
+.status{
+  min-height:26px;
+  margin-top:14px;
+  font-size:14px;
+  font-weight:700;
+}
+.status.err{color:#b42318}
+.status.ok{color:#027a48}
+.footer{
+  text-align:center;
+  padding:18px 24px 22px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+.confirm-modal,.crop-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:16px;
+}
+.confirm-card,.crop-card{
+  width:min(520px,100%);
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 20px 44px rgba(15,23,42,.24);
+  overflow:hidden;
+}
+.crop-card{width:min(980px,100%)}
+.confirm-head,.crop-head{
+  padding:18px 20px;
+  background:linear-gradient(135deg,var(--blue2),var(--navy));
+  color:#fff;
+  font-size:22px;
+  font-weight:700;
+}
+.confirm-body{
+  padding:18px 20px;
+  color:#344054;
+  line-height:1.6;
+}
+.confirm-actions,.crop-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  padding:0 20px 20px;
+}
+.crop-body{padding:18px 20px 12px}
+.crop-note{
+  font-size:13px;
+  color:#475467;
+  margin-bottom:12px;
+  line-height:1.5;
+}
+.crop-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 290px;
+  gap:16px;
+  align-items:start;
+}
+.crop-stage{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#eef2f6;
+  padding:10px;
+}
+.crop-canvas-wrap{
+  position:relative;
+  width:100%;
+  min-height:420px;
+  overflow:auto;
+}
+#cropCanvas{
+  width:100%;
+  display:block;
+  border-radius:12px;
+  background:#fff;
+  touch-action:none;
+}
+.crop-side{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fcfcfd;
+  padding:12px;
+}
+.crop-side h4{
+  margin:0 0 10px;
+  font-size:14px;
+  color:#344054;
+}
+.crop-side img{
+  width:100%;
+  display:block;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.hidden{display:none!important}
+@media (max-width:900px){
+  .crop-grid{grid-template-columns:1fr}
+}
+@media (max-width:780px){
+  .hero-top,.hero-left{flex-direction:column;align-items:center;text-align:center}
+  .hero-copy{text-align:center}
+  .grid{grid-template-columns:1fr}
+  .actions,.confirm-actions,.crop-actions{flex-direction:column}
+  .btn{width:100%}
+  .hero-graphic{text-align:center}
+  .hero-graphic svg{margin:0 auto}
+}
 </style>
+<script async src="https://docs.opencv.org/4.x/opencv.js"></script>
 </head>
 <body>
-<div class="wrap">
+<div class="wrapper">
   <div class="card">
-    <div class="header">
-      <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage" style="width:190px;max-width:100%;height:auto;border:0;">
-    </div>
     <div class="hero">
-      <h1>🗳️ Payment Drop Off</h1>
-      <p>Complete this quick form when leaving a check or money order in the drop box while the office is closed.</p>
+      <div class="hero-top">
+        <div class="hero-left">
+          <img class="hero-logo" src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage">
+          <div class="hero-copy">
+            <div class="badge">Payment Drop Off</div>
+            <h1>Payment Drop Off</h1>
+            <p>Complete this quick form when leaving a check or money order in the drop box while the office is closed.</p>
+          </div>
+        </div>
+        <div class="hero-graphic" aria-hidden="true">
+          <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="20" width="180" height="220" rx="10" fill="#c61d48"/>
+            <rect x="26" y="38" width="148" height="14" rx="3" fill="#9d1638"/>
+            <rect x="18" y="58" width="164" height="150" rx="6" fill="#c61d48"/>
+            <circle cx="100" cy="92" r="12" fill="#4b5563"/>
+            <circle cx="100" cy="92" r="5" fill="#d1d5db"/>
+            <rect x="54" y="180" width="92" height="24" rx="4" fill="#d8c47b"/>
+            <rect x="16" y="18" width="168" height="224" rx="10" fill="none" stroke="#8b0f18" stroke-width="4"/>
+          </svg>
+        </div>
+      </div>
     </div>
-    <div class="section">
-      <div class="directions">
-        <strong>Directions:</strong><br>
-        Enter your name, unit number, email address, payment type, check or money order number, payment amount, and the date of drop off.<br>
-        Take a clear picture picture of the front of the check or money order and upload it when submitting this form.
+
+    <div class="content">
+      <div class="notice">
+        Enter your name, unit number, email address, payment type, payment number, payment amount, and the date of drop off. Ensure the photo or uploaded scan of the front of the check or money order is clear and legible before submission.
       </div>
 
-      <form id="dropOffForm" style="margin-top:18px;">
+      <form id="dropForm">
+        <input type="hidden" id="paymentImageBase64" name="paymentImageBase64">
+        <input type="hidden" id="paymentImageName" name="paymentImageName">
+
         <div class="grid">
-          <div>
-            <label for="fullName">Customer Full Name</label>
-            <input id="fullName" name="fullName" autocomplete="name" required>
+          <div class="field-wrap">
+            <label for="fullName">Customer Full Name <span class="req">*</span></label>
+            <input id="fullName" name="fullName" type="text" required>
           </div>
-          <div>
-            <label for="email">Email Address</label>
-            <input id="email" name="email" type="email" autocomplete="email" required>
-            <div class="hint">A confirmation copy will be emailed to this address.</div>
+          <div class="field-wrap">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <input id="email" name="email" type="email" required>
           </div>
-          <div>
-            <label for="unitNumber">Unit Number</label>
-            <select id="unitNumber" name="unitNumber" required></select>
+
+          <div class="field-wrap">
+            <label for="unitNumber">Unit Number <span class="req">*</span></label>
+            <input id="unitNumber" name="unitNumber" type="text" required>
           </div>
-          <div>
-            <label for="paymentDate">Date</label>
-            <input id="paymentDate" name="paymentDate" type="date" required>
+          <div class="field-wrap">
+            <label for="dropOffDate">Date of Drop Off <span class="req">*</span></label>
+            <input id="dropOffDate" name="dropOffDate" type="date" required>
           </div>
-          <div>
-            <label for="paymentType">Type of Payment</label>
+
+          <div class="field-wrap">
+            <label for="paymentType">Type of Payment <span class="req">*</span></label>
             <select id="paymentType" name="paymentType" required>
               <option value="">Select one</option>
               <option value="Check">Check</option>
               <option value="Money Order">Money Order</option>
             </select>
           </div>
-          <div>
-            <label for="paymentNumber">Check / Money Order Number</label>
-            <input id="paymentNumber" name="paymentNumber" maxlength="40" required>
-            <div class="hint">Please enter the check or money order number displayed.</div>
+          <div class="field-wrap">
+            <label id="paymentNumberLabel" for="paymentNumber">Check / Money Order Number <span class="req">*</span></label>
+            <input id="paymentNumber" name="paymentNumber" type="text" required>
+            <div class="small-note">Please enter the displayed number from the check or money order.</div>
           </div>
-          <div>
-            <label for="amount">Amount</label>
-            <input id="amount" name="amount" inputmode="decimal" placeholder="$0.00" required>
-            <div class="hint">Enter the exact amount shown on the check or money order.</div>
+
+          <div class="field-wrap">
+            <label for="amount">Amount <span class="req">*</span></label>
+            <input id="amount" name="amount" type="number" min="0" step="0.01" placeholder="0.00" required>
           </div>
-          <div class="full">
-            <label for="paymentImage">Photo of Front of Check / Money Order</label>
-            <input id="paymentImage" name="paymentImage" type="file" accept="image/*" capture="environment" required>
-            <div class="hint">📷 Please take a clear photo of the front of the check or money order and upload it here.</div>
-            <div class="previewWrap" id="previewWrap"><img id="imagePreview" alt="Preview"></div>
-          </div>
-          <div class="full">
-            <button type="submit">Submit Payment Drop Off</button>
-            <div id="status" class="status"></div>
+          <div class="field-wrap">
+            <label for="paymentImage">Photo of Front of Check / Money Order <span class="req">*</span></label>
+            <input id="paymentImage" type="file" accept="image/*" required>
+            <div class="small-note">A crop window will open automatically after you select the image.</div>
           </div>
         </div>
-      </form>
 
-      <div id="successBox" class="success">
-        <strong>Thank you.</strong><br>
-        Your payment drop off was recorded successfully. Please check your email for your confirmation copy.<br>
-        Please ensure your payment is placed fully inside the drop box and that the lid is fully closed.<br>
-        Payments left after hours are generally processed the next business day.
-      </div>
+        <div class="preview-shell">
+          <div class="preview-title">Upload Preview</div>
+          <img id="paymentPreview" class="preview-image hidden" alt="Payment Upload Preview">
+        </div>
+
+        <div class="actions">
+          <button type="reset" class="btn btn-secondary">Clear Form</button>
+          <button type="submit" class="btn btn-primary">Submit Payment Drop Off</button>
+        </div>
+        <div id="status" class="status"></div>
+      </form>
     </div>
 
     <div class="footer">
-      <strong>Right Move Storage – Aldine</strong><br>
-      21667 Aldine Westfield Rd<br>
-      Humble, TX 77338<br>
-      281-233-0400<br>
-      aldine@rightmovestorage.com
-      <div class="footer-small">
-        This system and template were designed and developed by <strong>Mark Point</strong> of <strong>That Tech Guy</strong>.<br>
-        © 2026 That Tech Guy. All Rights Reserved.
-      </div>
+      Right Move Storage – Aldine<br>
+      21667 Aldine Westfield Rd, Humble, TX 77338<br>
+      (281) 233-0400<br>
+      aldine@rightmovestorage.com<br>
+      This system and template were designed and developed by Mark Point of That Tech Guy.<br>
+      © 2026 That Tech Guy. All Rights Reserved.
     </div>
   </div>
 </div>
 
+<div id="confirmModal" class="confirm-modal">
+  <div class="confirm-card">
+    <div class="confirm-head">Confirm Submission</div>
+    <div class="confirm-body">
+      Please confirm the drop off information is correct and the uploaded image is clear before submitting this payment drop off form.
+    </div>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-secondary" id="cancelSend">Cancel</button>
+      <button type="button" class="btn btn-primary" id="confirmSend">Yes, Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="cropModal" class="crop-modal">
+  <div class="crop-card">
+    <div class="crop-head">Adjust Payment Image Crop</div>
+    <div class="crop-body">
+      <div class="crop-note">
+        The form will try to detect the paper edges automatically. If the corners are not accurate, drag the four markers to the document corners, then click <strong>Apply Crop</strong>.
+      </div>
+      <div class="crop-grid">
+        <div class="crop-stage">
+          <div class="crop-canvas-wrap">
+            <canvas id="cropCanvas"></canvas>
+          </div>
+        </div>
+        <div class="crop-side">
+          <h4>Current Crop Result</h4>
+          <img id="cropPreviewImage" alt="Crop Preview">
+          <div class="small-note">Best results happen when the full document is visible, the background contrasts with the paper, and the image is clear and legible.</div>
+        </div>
+      </div>
+    </div>
+    <div class="crop-actions">
+      <button type="button" class="btn btn-outline" id="cropReset">Reset Corners</button>
+      <button type="button" class="btn btn-secondary" id="cropCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="cropApply">Apply Crop</button>
+    </div>
+  </div>
+</div>
+
+<iframe name="submissionFrame" id="submissionFrame" class="hidden"></iframe>
+
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
-const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec';
 
-const unitSelect = document.getElementById("unitNumber");
-unitSelect.appendChild(new Option("Select unit", ""));
-for (let i = 1; i <= 622; i++) {
-  const unit = String(i).padStart(5, "0");
-  if (UNAVAILABLE_UNITS.has(unit)) continue;
-  unitSelect.appendChild(new Option(unit, unit));
-}
+const form = document.getElementById('dropForm');
+const statusBox = document.getElementById('status');
+const paymentType = document.getElementById('paymentType');
+const paymentNumberLabel = document.getElementById('paymentNumberLabel');
+const paymentImageInput = document.getElementById('paymentImage');
+const paymentPreview = document.getElementById('paymentPreview');
+const paymentImageBase64Input = document.getElementById('paymentImageBase64');
+const paymentImageNameInput = document.getElementById('paymentImageName');
+const confirmModal = document.getElementById('confirmModal');
+const cancelSend = document.getElementById('cancelSend');
+const confirmSend = document.getElementById('confirmSend');
 
-function validEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-function validPaymentNumber(value) {
-  return /^[A-Za-z0-9-]+$/.test(value);
-}
-function parseAmountToNumber(value) {
-  const cleaned = String(value || "").replace(/[^\d.]/g, "");
-  if (!cleaned) return null;
-  const num = Number(cleaned);
-  return Number.isFinite(num) ? num : null;
-}
-function formatAmountInput(el) {
-  const num = parseAmountToNumber(el.value);
-  if (num === null) {
-    el.value = "";
+const cropModal = document.getElementById('cropModal');
+const cropCanvas = document.getElementById('cropCanvas');
+const cropCtx = cropCanvas.getContext('2d');
+const cropPreviewImage = document.getElementById('cropPreviewImage');
+const cropReset = document.getElementById('cropReset');
+const cropCancel = document.getElementById('cropCancel');
+const cropApply = document.getElementById('cropApply');
+
+let pendingSubmit = false;
+let submitTimeoutId = null;
+let cvReady = false;
+let cropSession = null;
+let paymentImageData = '';
+
+function showStatus(type, msg){
+  if (!msg) {
+    statusBox.className = 'status';
+    statusBox.textContent = '';
     return;
   }
-  el.value = "$" + num.toFixed(2);
+  statusBox.className = 'status ' + type;
+  statusBox.textContent = msg;
 }
-function status(msg, good=false) {
-  const el = document.getElementById("status");
-  el.textContent = msg;
-  el.style.color = good ? "#0b7a34" : "#b91c1c";
+
+function waitForOpenCv() {
+  return new Promise(function(resolve) {
+    if (cvReady || (window.cv && cv.Mat)) {
+      cvReady = true;
+      resolve();
+      return;
+    }
+    const timer = setInterval(function() {
+      if (window.cv && cv.Mat) {
+        clearInterval(timer);
+        cvReady = true;
+        resolve();
+      }
+    }, 150);
+    setTimeout(function() {
+      clearInterval(timer);
+      resolve();
+    }, 6000);
+  });
 }
-function fireMetric(type) {
-  if (!WEB_APP_URL || WEB_APP_URL.indexOf("REPLACE_WITH") === 0) return;
-  const url = WEB_APP_URL + "?action=metric&type=" + encodeURIComponent(type) + "&ts=" + Date.now();
-  fetch(url, { method: "GET", mode: "no-cors", keepalive: true }).catch(() => {});
-}
-fireMetric("page_view");
 
-const amountInput = document.getElementById("amount");
-amountInput.addEventListener("blur", () => formatAmountInput(amountInput));
-
-let paymentImageData = "";
-const paymentImage = document.getElementById("paymentImage");
-paymentImage.addEventListener("change", async (e) => {
-  const file = e.target.files && e.target.files[0];
-  if (!file) {
-    paymentImageData = "";
-    document.getElementById("previewWrap").style.display = "none";
-    return;
-  }
-  try {
-    paymentImageData = await fileToCompressedDataUrl(file, 900, 0.58);
-    const preview = document.getElementById("imagePreview");
-    preview.src = paymentImageData;
-    document.getElementById("previewWrap").style.display = "block";
-  } catch (err) {
-    paymentImageData = "";
-    document.getElementById("previewWrap").style.display = "none";
-    status("Could not process the image. Please try another photo.");
-  }
-});
-
-function fileToCompressedDataUrl(file, maxSize, quality) {
-  return new Promise((resolve, reject) => {
+function loadImageFile(file) {
+  return new Promise(function(resolve, reject) {
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = function(e) {
       const img = new Image();
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
-        const ratio = Math.min(1, maxSize / Math.max(width, height));
-        width = Math.round(width * ratio);
-        height = Math.round(height * ratio);
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
-      };
+      img.onload = function() { resolve(img); };
       img.onerror = reject;
-      img.src = reader.result;
+      img.src = e.target.result;
     };
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
 
-document.getElementById("dropOffForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const amountNum = parseAmountToNumber(form.amount.value);
+function clonePoints(points) {
+  return points.map(function(p){ return {x:p.x, y:p.y}; });
+}
 
-  const data = {
-    fullName: form.fullName.value.trim(),
-    email: form.email.value.trim(),
-    unitNumber: form.unitNumber.value,
-    paymentDate: form.paymentDate.value,
-    paymentType: form.paymentType.value,
-    paymentNumber: form.paymentNumber.value.trim(),
-    amount: amountNum !== null ? amountNum.toFixed(2) : "",
-    paymentImage: paymentImageData
+function orderPoints(pts) {
+  const sums = pts.map(p => p.x + p.y);
+  const diffs = pts.map(p => p.x - p.y);
+  const tl = pts[sums.indexOf(Math.min(...sums))];
+  const br = pts[sums.indexOf(Math.max(...sums))];
+  const tr = pts[diffs.indexOf(Math.max(...diffs))];
+  const bl = pts[diffs.indexOf(Math.min(...diffs))];
+  return [tl, tr, br, bl];
+}
+
+function dist(a,b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function autoDetectCornersFromImage(img) {
+  const margin = 24;
+  const fallback = [
+    {x: margin, y: margin},
+    {x: img.width - margin, y: margin},
+    {x: img.width - margin, y: img.height - margin},
+    {x: margin, y: img.height - margin}
+  ];
+
+  if (!(window.cv && cv.Mat)) return fallback;
+
+  let src=null, gray=null, blur=null, edge=null, contours=null, hierarchy=null;
+  try {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = img.width;
+    tempCanvas.height = img.height;
+    tempCanvas.getContext('2d').drawImage(img, 0, 0);
+
+    src = cv.imread(tempCanvas);
+    gray = new cv.Mat();
+    blur = new cv.Mat();
+    edge = new cv.Mat();
+    contours = new cv.MatVector();
+    hierarchy = new cv.Mat();
+
+    cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
+    cv.GaussianBlur(gray, blur, new cv.Size(5,5), 0, 0, cv.BORDER_DEFAULT);
+    cv.Canny(blur, edge, 75, 200);
+    cv.findContours(edge, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
+
+    let best = null;
+    let bestArea = 0;
+
+    for (let i = 0; i < contours.size(); i++) {
+      const cnt = contours.get(i);
+      const peri = cv.arcLength(cnt, true);
+      const approx = new cv.Mat();
+      cv.approxPolyDP(cnt, approx, 0.02 * peri, true);
+
+      if (approx.rows === 4) {
+        const area = Math.abs(cv.contourArea(approx));
+        if (area > bestArea) {
+          bestArea = area;
+          if (best) best.delete();
+          best = approx.clone();
+        }
+      }
+      approx.delete();
+      cnt.delete();
+    }
+
+    if (best && bestArea > (img.width * img.height * 0.15)) {
+      const pts = [];
+      for (let i = 0; i < 4; i++) {
+        pts.push({ x: best.data32S[i * 2], y: best.data32S[i * 2 + 1] });
+      }
+      best.delete();
+      return orderPoints(pts);
+    }
+    if (best) best.delete();
+    return fallback;
+  } catch (err) {
+    return fallback;
+  } finally {
+    if (src) src.delete();
+    if (gray) gray.delete();
+    if (blur) blur.delete();
+    if (edge) edge.delete();
+    if (contours) contours.delete();
+    if (hierarchy) hierarchy.delete();
+  }
+}
+
+function fitCropCanvasToImage(img) {
+  const wrapWidth = Math.min(cropCanvas.parentElement.clientWidth - 2, 640);
+  const scale = Math.min(1, wrapWidth / img.width);
+  cropCanvas.width = Math.round(img.width * scale);
+  cropCanvas.height = Math.round(img.height * scale);
+  cropCanvas.style.width = cropCanvas.width + 'px';
+  cropCanvas.style.height = cropCanvas.height + 'px';
+  return scale;
+}
+
+function drawCropStage() {
+  if (!cropSession) return;
+  const img = cropSession.img;
+  const scale = cropSession.displayScale;
+  cropCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
+  cropCtx.drawImage(img, 0, 0, cropCanvas.width, cropCanvas.height);
+
+  const pts = cropSession.points;
+  cropCtx.save();
+  cropCtx.strokeStyle = '#00A1FB';
+  cropCtx.lineWidth = 3;
+  cropCtx.fillStyle = 'rgba(0,161,251,.15)';
+  cropCtx.beginPath();
+  cropCtx.moveTo(pts[0].x * scale, pts[0].y * scale);
+  for (let i = 1; i < pts.length; i++) cropCtx.lineTo(pts[i].x * scale, pts[i].y * scale);
+  cropCtx.closePath();
+  cropCtx.fill();
+  cropCtx.stroke();
+
+  pts.forEach(function(p) {
+    cropCtx.beginPath();
+    cropCtx.fillStyle = '#ffffff';
+    cropCtx.arc(p.x * scale, p.y * scale, 8, 0, Math.PI * 2);
+    cropCtx.fill();
+    cropCtx.lineWidth = 3;
+    cropCtx.strokeStyle = '#241f51';
+    cropCtx.stroke();
+  });
+  cropCtx.restore();
+}
+
+function buildWarpedDocumentDataUrl(img, pts) {
+  const ordered = orderPoints(pts);
+  const [tl, tr, br, bl] = ordered;
+  const widthA = dist(br, bl);
+  const widthB = dist(tr, tl);
+  const maxWidth = Math.max(widthA, widthB);
+  const heightA = dist(tr, br);
+  const heightB = dist(tl, bl);
+  const maxHeight = Math.max(heightA, heightB);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(maxWidth));
+  canvas.height = Math.max(1, Math.round(maxHeight));
+
+  if (window.cv && cv.Mat) {
+    let src=null, dst=null, srcTri=null, dstTri=null, M=null;
+    try {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.width;
+      tempCanvas.height = img.height;
+      tempCanvas.getContext('2d').drawImage(img, 0, 0);
+      src = cv.imread(tempCanvas);
+      dst = new cv.Mat();
+      srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
+        tl.x, tl.y,
+        tr.x, tr.y,
+        br.x, br.y,
+        bl.x, bl.y
+      ]);
+      dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
+        0, 0,
+        canvas.width - 1, 0,
+        canvas.width - 1, canvas.height - 1,
+        0, canvas.height - 1
+      ]);
+      M = cv.getPerspectiveTransform(srcTri, dstTri);
+      cv.warpPerspective(src, dst, M, new cv.Size(canvas.width, canvas.height), cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+      cv.imshow(canvas, dst);
+      return canvas.toDataURL('image/jpeg', 0.9);
+    } catch (err) {
+      // fall back below
+    } finally {
+      if (src) src.delete();
+      if (dst) dst.delete();
+      if (srcTri) srcTri.delete();
+      if (dstTri) dstTri.delete();
+      if (M) M.delete();
+    }
+  }
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', 0.9);
+}
+
+function updateCropPreview() {
+  if (!cropSession) return;
+  cropPreviewImage.src = buildWarpedDocumentDataUrl(cropSession.img, cropSession.points);
+}
+
+function openCropModal(file, img) {
+  const detected = autoDetectCornersFromImage(img);
+  const ordered = orderPoints(detected);
+
+  cropSession = {
+    file: file,
+    img: img,
+    originalPoints: clonePoints(ordered),
+    points: clonePoints(ordered),
+    displayScale: fitCropCanvasToImage(img),
+    dragIndex: -1
   };
 
-  if (!data.unitNumber || UNAVAILABLE_UNITS.has(data.unitNumber)) {
-    status("Please select a valid available unit.");
+  drawCropStage();
+  updateCropPreview();
+  cropModal.style.display = 'flex';
+}
+
+function pickCorner(x, y) {
+  if (!cropSession) return -1;
+  const scale = cropSession.displayScale;
+  for (let i = 0; i < cropSession.points.length; i++) {
+    const p = cropSession.points[i];
+    const dx = x - (p.x * scale);
+    const dy = y - (p.y * scale);
+    if (Math.hypot(dx, dy) <= 16) return i;
+  }
+  return -1;
+}
+
+function canvasPos(evt) {
+  const rect = cropCanvas.getBoundingClientRect();
+  const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+  const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+  return { x: clientX - rect.left, y: clientY - rect.top };
+}
+
+function onCropDown(evt) {
+  if (!cropSession) return;
+  evt.preventDefault();
+  const p = canvasPos(evt);
+  cropSession.dragIndex = pickCorner(p.x, p.y);
+}
+function onCropMove(evt) {
+  if (!cropSession || cropSession.dragIndex < 0) return;
+  evt.preventDefault();
+  const p = canvasPos(evt);
+  const x = Math.max(0, Math.min(cropSession.img.width, p.x / cropSession.displayScale));
+  const y = Math.max(0, Math.min(cropSession.img.height, p.y / cropSession.displayScale));
+  cropSession.points[cropSession.dragIndex] = {x, y};
+  drawCropStage();
+  updateCropPreview();
+}
+function onCropUp() {
+  if (!cropSession) return;
+  cropSession.dragIndex = -1;
+}
+
+async function startCropWorkflow(fileInput) {
+  const file = fileInput.files && fileInput.files[0];
+  if (!file) {
+    paymentImageBase64Input.value = '';
+    paymentImageNameInput.value = '';
+    paymentPreview.classList.add('hidden');
+    paymentPreview.removeAttribute('src');
+    paymentImageData = '';
     return;
   }
-  if (!validEmail(data.email)) {
-    status("Please enter a valid email address.");
-    return;
-  }
-  if (!validPaymentNumber(data.paymentNumber)) {
-    status("Payment number may contain only letters, numbers, and hyphens.");
-    return;
-  }
-  if (!data.amount) {
-    status("Please enter a valid payment amount.");
-    return;
-  }
-  if (!data.paymentImage) {
-    status("Please upload a clear photo of the front of the check or money order.");
+  showStatus('ok', 'Loading image and detecting document edges...');
+  await waitForOpenCv();
+  const img = await loadImageFile(file);
+  openCropModal(file, img);
+
+  cropApply.onclick = function() {
+    const dataUrl = buildWarpedDocumentDataUrl(cropSession.img, cropSession.points);
+    paymentImageData = dataUrl;
+    paymentImageBase64Input.value = dataUrl;
+    paymentImageNameInput.value = file.name || '';
+    paymentPreview.src = dataUrl;
+    paymentPreview.classList.remove('hidden');
+    cropModal.style.display = 'none';
+    cropSession = null;
+    showStatus('ok', 'Document crop applied.');
+  };
+
+  cropReset.onclick = function() {
+    if (!cropSession) return;
+    cropSession.points = clonePoints(cropSession.originalPoints);
+    drawCropStage();
+    updateCropPreview();
+  };
+
+  cropCancel.onclick = function() {
+    cropModal.style.display = 'none';
+    cropSession = null;
+    fileInput.value = '';
+    showStatus('err', 'Crop cancelled. Please choose the file again if needed.');
+  };
+}
+
+function validateForm() {
+  if (!document.getElementById('fullName').value.trim()) return 'Customer full name is required.';
+  if (!document.getElementById('email').value.trim()) return 'Email address is required.';
+  if (!document.getElementById('unitNumber').value.trim()) return 'Unit number is required.';
+  if (!document.getElementById('dropOffDate').value) return 'Date of drop off is required.';
+  if (!document.getElementById('paymentType').value) return 'Type of payment is required.';
+  if (!document.getElementById('paymentNumber').value.trim()) return 'Payment number is required.';
+  if (!(Number(document.getElementById('amount').value) > 0)) return 'Amount is required.';
+  if (!paymentImageBase64Input.value) return 'A cropped check or money order image is required.';
+  return '';
+}
+
+function collectPayload() {
+  const fd = new FormData(form);
+  return Object.fromEntries(fd.entries());
+}
+
+function sendPayload(payload) {
+  if (!WEB_APP_URL || WEB_APP_URL.includes('REPLACE_WITH_YOUR_DEPLOYED_APPS_SCRIPT_WEB_APP_URL')) {
+    showStatus('err', 'Replace WEB_APP_URL in the HTML with your deployed Apps Script Web App URL before using this form.');
     return;
   }
 
-  status("Submitting...", true);
+  const iframe = document.getElementById('submissionFrame');
+  const tempForm = document.createElement('form');
+  tempForm.method = 'POST';
+  tempForm.action = WEB_APP_URL;
+  tempForm.target = 'submissionFrame';
+  tempForm.style.display = 'none';
 
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (json.ok) {
-      form.style.display = "none";
-      document.getElementById("successBox").style.display = "block";
-      status("");
-    } else {
-      status(json.error || "Submission failed. Please try again.");
-    }
-  } catch (err) {
-    status("Submission failed. Please try again.");
+  Object.entries(payload).forEach(function(entry) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = entry[0];
+    input.value = entry[1] == null ? '' : String(entry[1]);
+    tempForm.appendChild(input);
+  });
+
+  pendingSubmit = true;
+  showStatus('ok', 'Submitting payment drop off now. Please wait...');
+  document.body.appendChild(tempForm);
+  tempForm.submit();
+
+  iframe.onload = function() {
+    if (!pendingSubmit) return;
+    pendingSubmit = false;
+    window.clearTimeout(submitTimeoutId);
+    showStatus('ok', 'Payment drop off submitted successfully.');
+    form.reset();
+    paymentPreview.classList.add('hidden');
+    paymentPreview.removeAttribute('src');
+    paymentImageData = '';
+    if (tempForm.parentNode) tempForm.parentNode.removeChild(tempForm);
+  };
+
+  submitTimeoutId = window.setTimeout(function() {
+    if (!pendingSubmit) return;
+    pendingSubmit = false;
+    showStatus('err', 'Submission timed out. Verify the Apps Script web app is deployed and accessible, then try again.');
+    if (tempForm.parentNode) tempForm.parentNode.removeChild(tempForm);
+  }, 30000);
+}
+
+paymentType.addEventListener('change', function() {
+  const value = this.value;
+  if (value === 'Check') {
+    paymentNumberLabel.innerHTML = 'Check Number <span class="req">*</span>';
+  } else if (value === 'Money Order') {
+    paymentNumberLabel.innerHTML = 'Money Order Number <span class="req">*</span>';
+  } else {
+    paymentNumberLabel.innerHTML = 'Check / Money Order Number <span class="req">*</span>';
   }
 });
+
+paymentImageInput.addEventListener('change', async function() {
+  try {
+    await startCropWorkflow(paymentImageInput);
+  } catch (err) {
+    showStatus('err', 'Unable to process the uploaded payment image.');
+  }
+});
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  showStatus('', '');
+  const issue = validateForm();
+  if (issue) {
+    showStatus('err', issue);
+    return;
+  }
+  confirmModal.style.display = 'flex';
+});
+
+cancelSend.addEventListener('click', function() {
+  confirmModal.style.display = 'none';
+  showStatus('err', 'Submission cancelled.');
+});
+
+confirmSend.addEventListener('click', function() {
+  confirmModal.style.display = 'none';
+  const payload = collectPayload();
+  sendPayload(payload);
+});
+
+window.addEventListener('click', function(e) {
+  if (e.target === confirmModal) confirmModal.style.display = 'none';
+  if (e.target === cropModal) {
+    cropModal.style.display = 'none';
+    cropSession = null;
+  }
+});
+
+cropCanvas.addEventListener('mousedown', onCropDown);
+cropCanvas.addEventListener('mousemove', onCropMove);
+window.addEventListener('mouseup', onCropUp);
+cropCanvas.addEventListener('touchstart', onCropDown, {passive:false});
+cropCanvas.addEventListener('touchmove', onCropMove, {passive:false});
+window.addEventListener('touchend', onCropUp, {passive:false});
+
+form.addEventListener('reset', function() {
+  window.setTimeout(function() {
+    showStatus('', '');
+    paymentPreview.classList.add('hidden');
+    paymentPreview.removeAttribute('src');
+    paymentImageData = '';
+    paymentType.dispatchEvent(new Event('change'));
+  }, 0);
+});
+
+document.getElementById('dropOffDate').valueAsDate = new Date();
+paymentType.dispatchEvent(new Event('change'));
 </script>
 </body>
 </html>
