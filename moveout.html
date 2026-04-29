@@ -2,432 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vacate Notice & Move Out</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Vacate Notice, Move Out & Auction Sale</title>
 <style>
-body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#243142}
-.wrap{max-width:920px;margin:0 auto;padding:20px}
-.card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;overflow:hidden}
-.header{padding:22px;text-align:center;border-bottom:1px solid #d9e2f0}
-.hero{padding:26px;background:#4f81bc;color:#fff;text-align:center}
-.hero h1{margin:0;font-size:32px}
-.hero p{margin:10px 0 0;font-size:16px;line-height:1.6}
-.section{padding:22px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.full{grid-column:1 / -1}
-label{display:block;font-size:14px;font-weight:700;margin:0 0 6px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px;box-sizing:border-box;background:#fff}
-.radios{display:flex;gap:12px;flex-wrap:wrap}
-.radios label{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;margin:0}
-.radios input{width:auto}
-.note{background:#f4f8ff;border:1px solid #d3dff3;border-radius:8px;padding:16px;line-height:1.65;font-size:14px}
-.warn{background:#fff5f5;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:14px;line-height:1.6;font-size:14px}
-.hint{font-size:12px;color:#667085;line-height:1.5;margin-top:4px}
-.checkline{display:flex;gap:10px;align-items:flex-start;padding:10px 0}
-.checkline input{width:auto;margin-top:3px}
-.photoWrap{display:none;margin-top:10px}
-.photoWrap img{max-width:100%;max-height:260px;border:1px solid #cbd5e1;border-radius:8px}
-.exampleBtn{padding:8px 12px;background:#111827;color:#fff;border-radius:8px;font-size:13px;cursor:pointer;display:inline-block}
-.sigbox{border:1px solid #cbd5e1;border-radius:8px;background:#fff}
-#signatureCanvas{width:100%;height:180px;display:block;touch-action:none;cursor:crosshair}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-button{background:#5E85C4;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:700;cursor:pointer}
-button.secondary{background:#e7eef9;color:#1f4e78}
-.status{margin-top:14px;font-size:14px}
-.success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.7}
-.footer{padding:18px 22px;text-align:center;font-size:13px;line-height:1.6;color:#666;border-top:1px solid #d9e2f0}
-.hidden{display:none}
-.yellowbox{background:#fff200;border:1px solid #e1cf00;border-radius:8px;padding:14px;line-height:1.6;font-size:14px;color:#111827;font-weight:700}
-@media (max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:26px}}
+:root{--bg:#f3f6fb;--card:#fff;--line:#d0d5dd;--text:#1f2937;--muted:#667085;--blue:#5E85C4;--blue2:#00A1FB;--navy:#241f51;--green:#89F895;--danger:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.wrapper{width:min(920px,calc(100% - 24px));margin:18px auto 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 12px 28px rgba(16,24,40,.08)}
+.logo-wrap{text-align:center;padding:18px 20px 12px;background:#fff}
+.rm-logo{width:190px;max-width:60%;height:auto}
+.hero{background:linear-gradient(135deg,var(--blue2),var(--blue) 54%,var(--navy));color:#fff;padding:24px 26px 22px}
+.hero-row{display:flex;justify-content:center;align-items:center;gap:18px;text-align:center}
+.hero-copy h1{margin:0;font-size:34px;line-height:1.05}.hero-copy p{margin:8px 0 0;color:#eef6ff;font-size:15px}
+.unit-icon{width:120px;height:auto;display:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.20))}
+.content{padding:22px 24px 18px}.notice-type{margin-bottom:18px}.notice-type-label{font-weight:700;font-size:14px;margin-bottom:10px}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px}.pill{border:1px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;background:#fff;display:flex;align-items:center;gap:8px;font-weight:700}.pill input{width:auto}
+.info{border:1px solid #cfe7f8;border-left:5px solid var(--blue2);border-radius:14px;background:#f8fbff;padding:14px 16px;color:#344054;font-size:14px;line-height:1.55;margin-bottom:18px}
+.warning{border:1px solid #fecdca;border-radius:14px;background:#fff5f5;padding:14px 16px;color:#7a271a;font-size:14px;line-height:1.55;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}.field-wrap{display:flex;flex-direction:column;gap:8px}.field-wrap.full{grid-column:1/-1}
+label{font-weight:700;font-size:14px;color:#344054}.req{color:var(--danger)}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:16px;padding:14px 15px;color:#111827;font-family:inherit}
+input[type=file]{padding:11px}textarea{min-height:110px;resize:vertical}.small-note{margin-top:6px;font-size:12px;line-height:1.45;color:var(--muted)}
+.example-btn{border:none;border-radius:10px;padding:10px 14px;background:#111827;color:#fff;font-weight:700;cursor:pointer;width:max-content}
+.employee-box{border:1px solid var(--line);border-radius:16px;background:#fcfcfd;padding:16px;margin-top:18px;display:none}
+.employee-choice{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}.employee-choice label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#fff;cursor:pointer}.employee-choice input{width:auto}
+.actions{display:flex;justify-content:flex-start;gap:14px;margin-top:20px}.btn{border:none;border-radius:14px;padding:15px 24px;font-size:16px;font-weight:700;cursor:pointer}.btn-primary{background:var(--navy);color:#fff}.btn-secondary{background:#e5e7eb;color:#111827}
+.status{min-height:26px;margin-top:14px;font-size:14px;font-weight:700}.status.err{color:#b42318}.status.ok{color:#027a48}
+.footer{text-align:center;padding:18px 24px 22px;color:var(--muted);font-size:12px;line-height:1.7;border-top:1px solid #eef2f6}.footer strong{color:#475467}
+.hidden{display:none!important}
+@media(max-width:780px){.hero-row{flex-direction:column}.hero-copy h1{font-size:30px}.grid{grid-template-columns:1fr}.actions{flex-direction:column}.btn{width:100%}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="header">
-      <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage" style="width:190px;max-width:100%;height:auto;border:0;">
-    </div>
-    <div class="hero">
-      <h1 id="formTitle">Vacate Notice & Move Out</h1>
-      <p id="formSubtitle">Choose the notice type below and complete the required information.</p>
-    </div>
-
-    <div class="section">
-      <form id="noticeForm">
-        <div class="grid">
-          <div class="full">
-            <label>Notice Type</label>
-            <div class="radios">
-              <label><input type="radio" name="noticeType" value="Vacate Notice" required> Vacate Notice</label>
-              <label><input type="radio" name="noticeType" value="Move Out"> Move Out</label>
-              <label><input type="radio" name="noticeType" value="Auction Sale"> Auction Sale</label>
-            </div>
-          </div>
-
-          <div class="full">
-            <div class="note" id="dynamicIntro">Select a notice type to see the required instructions.</div>
-          </div>
-
-          <div class="full hidden" id="vacateTopNotice">
-            <div class="warn"><strong>📅 10 Days Notice Required</strong></div>
-          </div>
-
-          <div>
-            <label for="fullName" id="nameLabel">Customer Full Name</label>
-            <input id="fullName" required>
-          </div>
-          <div>
-            <label for="unitNumber">Unit Number</label>
-            <input id="unitNumber" maxlength="5" inputmode="numeric" placeholder="00001" required>
-          </div>
-          <div id="emailWrap">
-            <label for="email">Email Address</label>
-            <input id="email" type="email" required>
-          </div>
-          <div id="mobileWrap" class="hidden">
-            <label for="mobileNumber">Mobile Number</label>
-            <input id="mobileNumber" inputmode="numeric" maxlength="14" placeholder="(281)233-0400">
-          </div>
-          <div id="moveDateWrap" class="hidden">
-            <label for="moveOutDate">Planned Move Out Date</label>
-            <input id="moveOutDate" type="date">
-            <div class="hint">Required for Vacate Notice.</div>
-          </div>
-
-          <div class="full hidden" id="rentReminderWrap">
-            <div class="warn" id="rentReminder"></div>
-          </div>
-
-          <div class="full hidden" id="vacateChecklist">
-            <div class="checkline"><input type="checkbox" id="allItemsRemoved"><label for="allItemsRemoved">I understand that I must remove all items from the unit before vacating.</label></div>
-            <div class="checkline"><input type="checkbox" id="lockRemoved"><label for="lockRemoved">I understand that I must remove my lock and leave the unit door open when finished.</label></div>
-            <div class="checkline"><input type="checkbox" id="trashRemoved"><label for="trashRemoved">I understand that all trash and discarded items must be removed from the property. No use of the company dumpster is allowed. Failure to remove trash may result in a $50.00 or greater removal charge.</label></div>
-          </div>
-
-          <div class="full hidden" id="vacateYellowNotice">
-            <div class="yellowbox">
-              I also understand that if I have any trash or other items that I wish to discard, I must remove the trash or items from property. All contents are to be removed from my space and are to be removed from property. Violation of this will result in a fine.
-            </div>
-          </div>
-
-          <div class="full hidden" id="moveOutNoticeText">
-            <div class="warn">
-              All items and trash must be removed from the property and may not be left in your unit, on the property or in or near the company dumpster. Failure to remove items may result in a $50.00 or greater removal charge.<br><br>
-              The office will verify your move out and provide the final move out receipt once verified. If there are any issues, the office will contact you to resolve them.
-            </div>
-          </div>
-
-          <div class="full hidden" id="auctionNoticeText">
-            <div class="warn">
-              Auction buyers must fully clean the unit to receive their $250.00 deposit back. No use of the company dumpster is allowed. All discarded items and trash must be removed from the property.
-            </div>
-          </div>
-
-          <div class="full" id="photoFieldWrap">
-            <label for="unitPhoto">Upload Photo</label>
-            <input id="unitPhoto" type="file" accept="image/*" capture="environment">
-            <div class="hint" id="photoHint">Upload one clear photo of the empty unit with the door open and the unit number visible. Consider using your camera's ultra-wide (0.5) focal length.</div>
-            <div style="margin-top:8px;"><span class="exampleBtn" id="showExampleBtn">View Example</span></div>
-            <div class="photoWrap" id="photoPreviewWrap"><img id="photoPreview" alt="Preview"></div>
-          </div>
-
-          <div class="full hidden" id="signatureWrap">
-            <label>✍️ Signature X</label>
-            <div class="sigbox"><canvas id="signatureCanvas"></canvas></div>
-            <div class="actions">
-              <button type="button" class="secondary" id="clearSignature">Clear Signature</button>
-            </div>
-          </div>
-          <div class="hidden" id="signatureNameWrap">
-            <label for="signatureName">Type Your Name</label>
-            <input id="signatureName">
-          </div>
-
-          <div class="full">
-            <button type="submit">Submit Notice</button>
-            <div id="status" class="status"></div>
-          </div>
-        </div>
-      </form>
-
-      <div id="successBox" class="success">
-        Thank you. Your form was submitted successfully. The office will review it and contact you if anything further is needed.
-      </div>
-    </div>
-
-    <div class="footer">
-      <strong>Right Move Storage – Aldine</strong><br>
-      21667 Aldine Westfield Rd<br>
-      Humble, TX 77338<br>
-      281-233-0400<br>
-      aldine@rightmovestorage.com
-    </div>
-  </div>
+<div class="wrapper"><div class="card">
+<div class="logo-wrap"><img class="rm-logo" src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage"></div>
+<div class="hero"><div class="hero-row">
+<img src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" style="max-width:260px;width:100%;height:auto;border-radius:8px;" alt="Open Storage Unit"/>
+<div class="hero-copy"><h1 id="formTitle">Move Out</h1><p id="formSubtitle">Confirm your unit is empty and ready for office verification.</p></div>
+</div></div>
+<div class="content"><form id="noticeForm">
+<input type="hidden" id="fullName" name="fullName">
+<div class="notice-type"><div class="notice-type-label">Notice Type</div><div class="pill-row">
+<label class="pill"><input type="radio" name="noticeType" value="Vacate Notice"> Vacate Notice</label>
+<label class="pill"><input type="radio" name="noticeType" value="Move Out" checked> Move Out</label>
+<label class="pill"><input type="radio" name="noticeType" value="Auction Sale"> Auction Sale</label>
+</div></div>
+<div id="dynamicInfo" class="info">Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification.</div>
+<div id="employeeBox" class="employee-box"><label>Are you an employee of Aldine Storage? <span class="req">*</span></label><div class="employee-choice"><label><input type="radio" name="isEmployee" value="Yes"> Yes</label><label><input type="radio" name="isEmployee" value="No"> No</label></div><div id="employeeNameWrap" class="field-wrap full hidden" style="margin-top:14px;"><label for="employeeName">Employee Name <span class="req">*</span></label><input id="employeeName" name="employeeName" type="text"></div>
+<div class="grid">
+<div class="field-wrap"><label for="customerName">Customer Full Name <span class="req">*</span></label><input id="customerName" name="customerName" type="text" required></div>
+<div class="field-wrap"><label for="unitNumber">Unit Number <span class="req">*</span></label><select id="unitNumber" name="unitNumber" required><option value="">Select unit</option></select></div>
+<div class="field-wrap"><label for="email">Email Address <span class="req">*</span></label><input id="email" name="email" type="email" required></div>
+<div class="field-wrap" id="dateField"><label for="noticeDate">Date <span class="req">*</span></label><input id="noticeDate" name="noticeDate" type="date" required></div>
 </div>
-
+<div id="moveOutWarning" class="warning"><strong>All items and trash must be removed</strong> from the property and may not be left in your unit, on the property, or in or near the company dumpster. Failure to remove items may result in a <strong>$50.00 or greater removal charge</strong>.<br><br>The office will verify your move out and provide the final move out receipt once verified. If there are any issues, the office will contact you to resolve them.</div>
+<div id="vacateNoticeBlock" class="warning hidden"><strong>10 Days Notice Required.</strong><br><br>In order to terminate my Self-Service Rental Agreement, I understand I must give 10 days written notice. Refer to paragraphs 9-10 of your Self-Service Rental Agreement for more details.<br><br>To Whom It May Concern or representative of Aldine Storage, you are hereby notified that I, the undersigned, will vacate storage space before or by the selected date. I agree that my space will be swept, empty, and in good condition with my lock removed.</div>
+<div id="auctionSaleBlock" class="warning hidden">This selection is for customer-authorized auction sale or release-related communication. The office will review the submitted information and contact the customer if additional information is required.</div>
+<div class="grid">
+<div id="photoBlock" class="field-wrap full"><label for="unitPhoto">Upload Photo</label><input id="unitPhoto" name="unitPhoto" type="file" accept="image/*,.pdf,application/pdf"><div class="small-note" id="photoHelp">Upload one clear photo of the unit in full view, empty, with the door open and unit number visible.</div><button type="button" class="example-btn" id="viewExample">View Example</button></div>
+<div id="messageBlock" class="field-wrap full hidden"><label for="message">Additional Information</label><textarea id="message" name="message" placeholder="Add any details the office should know."></textarea></div>
+</div>
+</div>
+<input type="hidden" name="signatureRemoved" value="Move Out signature requirement removed">
+<div class="actions"><button type="submit" class="btn btn-primary" id="submitButton">Submit Notice</button><button type="reset" class="btn btn-secondary">Clear Form</button></div><div id="status" class="status"></div>
+</form></div>
+<div class="footer"><strong>Right Move Storage – Aldine</strong><br>21667 Aldine Westfield Rd<br>Humble, TX 77338<br>Phone: (281) 233-0400 | Email: aldine@rightmovestorage.com<br>www.rightmovestorage.com<br><br>© 2026 Right Move Storage. Form created, developed, and maintained by That Tech Guy.<br>Created by Mark Point – That Tech Guy | Web • Code • Automation</div>
+</div></div>
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
-const EXAMPLE_IMAGE_URL = "https://res.cloudinary.com/mytechguy/image/upload/v1776114903/IMG_1440_qnrlwz.heic";
-const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
-
-let unitPhotoData = "";
-let hasSignature = false;
-
-function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-function formatPhone(val){
-  let d = String(val || "").replace(/\D/g,'').slice(0,10);
-  if(!d) return "";
-  if(d.length < 4) return "(" + d;
-  if(d.length < 7) return "(" + d.slice(0,3) + ")" + d.slice(3);
-  return "(" + d.slice(0,3) + ")" + d.slice(3,6) + "-" + d.slice(6);
-}
-function status(msg, good=false){
-  const el = document.getElementById("status");
-  el.textContent = msg;
-  el.style.color = good ? "#0b7a34" : "#b91c1c";
-}
-function noticeType(){
-  return document.querySelector('input[name="noticeType"]:checked')?.value || "";
-}
-function toggleSections(){
-  const type = noticeType();
-  const title = document.getElementById("formTitle");
-  const subtitle = document.getElementById("formSubtitle");
-  const intro = document.getElementById("dynamicIntro");
-  const mobileWrap = document.getElementById("mobileWrap");
-  const moveDateWrap = document.getElementById("moveDateWrap");
-  const rentReminderWrap = document.getElementById("rentReminderWrap");
-  const vacateChecklist = document.getElementById("vacateChecklist");
-  const vacateTopNotice = document.getElementById("vacateTopNotice");
-  const vacateYellowNotice = document.getElementById("vacateYellowNotice");
-  const moveOutNoticeText = document.getElementById("moveOutNoticeText");
-  const auctionNoticeText = document.getElementById("auctionNoticeText");
-  const signatureWrap = document.getElementById("signatureWrap");
-  const signatureNameWrap = document.getElementById("signatureNameWrap");
-  const nameLabel = document.getElementById("nameLabel");
-  const photoHint = document.getElementById("photoHint");
-  const photoFieldWrap = document.getElementById("photoFieldWrap");
-
-  [mobileWrap, moveDateWrap, rentReminderWrap, vacateChecklist, vacateTopNotice, vacateYellowNotice, moveOutNoticeText, auctionNoticeText, signatureWrap, signatureNameWrap]
-    .forEach(el => el.classList.add("hidden"));
-  photoFieldWrap.classList.remove("hidden");
-
-  document.getElementById("moveOutDate").required = false;
-  document.getElementById("mobileNumber").required = false;
-  document.getElementById("signatureName").required = false;
-  hasSignature = false;
-  clearCanvas();
-
-  if (type === "Vacate Notice") {
-    title.textContent = "📦 Vacate Notice";
-    subtitle.textContent = "Provide your planned move out date and required acknowledgements.";
-    intro.innerHTML = 'In order to terminate my Self-Service Rental Agreement, I understand I must give <strong>10 days written notice</strong>.<br>(Refer to ¶ paragraphs 9-10 of your Self-Service Rental Agreement for more details.)<br><br>To Whom It May Concern or representative of Aldine Storage, You are hereby notified that I, the undersigned will vacate storage space before or by the selected date.<br>I agree that my space will be swept, empty, and in good condition with my lock removed.';
-    moveDateWrap.classList.remove("hidden");
-    vacateTopNotice.classList.remove("hidden");
-    vacateChecklist.classList.remove("hidden");
-    vacateYellowNotice.classList.remove("hidden");
-    signatureWrap.classList.remove("hidden");
-    signatureNameWrap.classList.remove("hidden");
-    photoFieldWrap.classList.add("hidden");
-    setTimeout(resizeCanvas, 0);
-    document.getElementById("moveOutDate").required = true;
-    document.getElementById("signatureName").required = true;
-    nameLabel.textContent = "Customer Full Name";
-    photoHint.textContent = "No photo is required for Vacate Notice.";
-  } else if (type === "Move Out") {
-    title.textContent = "Move Out";
-    subtitle.textContent = "Confirm your unit is empty and ready for office verification.";
-    intro.textContent = "Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification.";
-    moveOutNoticeText.classList.remove("hidden");
-    signatureWrap.classList.remove("hidden");
-    signatureNameWrap.classList.remove("hidden");
-    setTimeout(resizeCanvas, 0);
-    document.getElementById("signatureName").required = true;
-    nameLabel.textContent = "Customer Full Name";
-    photoHint.textContent = "Upload one clear photo of the unit in full view, empty, with the door open and unit number visible.";
-  } else if (type === "Auction Sale") {
-    title.textContent = "Auction Sale";
-    subtitle.textContent = "Auction buyers must complete this to request deposit return review.";
-    intro.textContent = "Auction buyers must remove all contents and trash from the property to receive their deposit back.";
-    auctionNoticeText.classList.remove("hidden");
-    mobileWrap.classList.remove("hidden");
-    document.getElementById("mobileNumber").required = true;
-    nameLabel.textContent = "Auction Buyer Full Name";
-    photoHint.textContent = "Upload one clear photo showing the empty cleaned unit with the door open and the unit number visible.";
-  } else {
-    title.textContent = "Vacate Notice & Move Out";
-    subtitle.textContent = "Choose the notice type below and complete the required information.";
-    intro.textContent = "Select a notice type to see the required instructions.";
-  }
-}
-function updateRentReminder(){
-  const wrap = document.getElementById("rentReminderWrap");
-  const box = document.getElementById("rentReminder");
-  const val = document.getElementById("moveOutDate").value;
-  const type = noticeType();
-  if(type !== "Vacate Notice" || !val){
-    wrap.classList.add("hidden");
-    return;
-  }
-  const selected = new Date(val + "T00:00:00");
-  const today = new Date();
-  if(selected.getMonth() !== today.getMonth() || selected.getFullYear() !== today.getFullYear()){
-    box.textContent = "Reminder: Rent is due on the first of each month and is not prorated under your rental agreement. If possible, please move out by the end of the current month to avoid additional monthly charges.";
-    wrap.classList.remove("hidden");
-  } else {
-    wrap.classList.add("hidden");
-  }
-}
-function fileToCompressedDataUrl(file, maxSize, quality) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        let width = img.width, height = img.height;
-        const ratio = Math.min(1, maxSize / Math.max(width, height));
-        width = Math.round(width * ratio);
-        height = Math.round(height * ratio);
-        const canvas = document.createElement("canvas");
-        canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,width,height);
-        ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
-      };
-      img.onerror = reject;
-      img.src = reader.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-document.querySelectorAll('input[name="noticeType"]').forEach(el => el.addEventListener("change", toggleSections));
-document.getElementById("moveOutDate").addEventListener("change", updateRentReminder);
-document.getElementById("mobileNumber").addEventListener("input", e => e.target.value = formatPhone(e.target.value));
-document.getElementById("showExampleBtn").addEventListener("click", () => {
-  if(EXAMPLE_IMAGE_URL && EXAMPLE_IMAGE_URL.indexOf("REPLACE_WITH") !== 0){
-    window.open(EXAMPLE_IMAGE_URL, "_blank");
-  } else {
-    alert("Add your example image URL first.");
-  }
-});
-
-document.getElementById("unitPhoto").addEventListener("change", async (e) => {
-  const file = e.target.files && e.target.files[0];
-  if(!file){
-    unitPhotoData = "";
-    document.getElementById("photoPreviewWrap").style.display = "none";
-    return;
-  }
-  try{
-    unitPhotoData = await fileToCompressedDataUrl(file, 1200, 0.68);
-    document.getElementById("photoPreview").src = unitPhotoData;
-    document.getElementById("photoPreviewWrap").style.display = "block";
-  }catch(err){
-    unitPhotoData = "";
-    status("Could not process the uploaded photo.");
-  }
-});
-
-// Signature
-const canvas = document.getElementById("signatureCanvas");
-const ctx = canvas.getContext("2d");
-let drawing = false;
-function resizeCanvas(){
-  const ratio = Math.max(window.devicePixelRatio || 1, 1);
-  const rect = canvas.getBoundingClientRect();
-  const displayWidth = Math.max(rect.width || canvas.parentElement.clientWidth || 300, 300);
-  canvas.width = displayWidth * ratio;
-  canvas.height = 180 * ratio;
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(ratio, ratio);
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "#111827";
-  clearCanvas();
-  hasSignature = false;
-}
-function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
-function getPos(e){
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-  return {x,y};
-}
-function startDraw(e){ drawing = true; hasSignature = true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); }
-function draw(e){ if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); }
-function endDraw(e){ drawing = false; e.preventDefault(); }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", endDraw);
-canvas.addEventListener("mouseleave", endDraw);
-canvas.addEventListener("touchstart", startDraw, {passive:false});
-canvas.addEventListener("touchmove", draw, {passive:false});
-canvas.addEventListener("touchend", endDraw, {passive:false});
-document.getElementById("clearSignature").addEventListener("click", () => { clearCanvas(); hasSignature = false; });
-
-document.getElementById("noticeForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const type = noticeType();
-  const data = {
-    noticeType: type,
-    fullName: fullName.value.trim(),
-    unitNumber: unitNumber.value.trim().padStart(5, "0"),
-    email: email.value.trim(),
-    mobileNumber: mobileNumber.value.trim(),
-    moveOutDate: moveOutDate.value,
-    allItemsRemoved: document.getElementById("allItemsRemoved").checked,
-    lockRemoved: document.getElementById("lockRemoved").checked,
-    trashRemoved: document.getElementById("trashRemoved").checked,
-    signatureName: signatureName.value.trim(),
-    signatureImage: hasSignature ? canvas.toDataURL("image/png") : "",
-    unitPhoto: unitPhotoData
-  };
-
-  if(!type){ status("Please select a notice type."); return; }
-  if(!/^\d{5}$/.test(data.unitNumber) || parseInt(data.unitNumber,10) < 1 || parseInt(data.unitNumber,10) > 622 || UNAVAILABLE_UNITS.has(data.unitNumber)){
-    status("Please enter a valid available unit number."); return;
-  }
-  if(!validEmail(data.email)){ status("Please enter a valid email address."); return; }
-
-  if(type === "Vacate Notice"){
-    if(!data.moveOutDate){ status("Please enter your planned move out date."); return; }
-    if(!data.allItemsRemoved || !data.lockRemoved || !data.trashRemoved){ status("Please complete all required acknowledgements."); return; }
-    if(!data.signatureName || !data.signatureImage){ status("Please provide your signature."); return; }
-  }
-  if(type !== "Vacate Notice" && !data.unitPhoto){ status("Please upload the required unit photo."); return; }
-  if(type === "Move Out"){
-    if(!data.signatureName || !data.signatureImage){ status("Please provide your signature."); return; }
-  }
-  if(type === "Auction Sale"){
-    if(data.mobileNumber.replace(/\D/g,'').length !== 10){ status("Please enter a valid mobile number."); return; }
-  }
-
-  status("Submitting...", true);
-
-  try{
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: {"Content-Type":"text/plain;charset=utf-8"},
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if(json.ok){
-      noticeForm.style.display = "none";
-      successBox.style.display = "block";
-      status("");
-    }else{
-      status(json.error || "Submission failed.");
-    }
-  }catch(err){
-    status("Submission failed.");
-  }
-});
+const WEB_APP_URL='https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec';
+const UNAVAILABLE_UNITS=['00143','00144','00145','00199','00258','00309','00320','00357','00378','00556'];
+const UNIT_START=1,UNIT_END=700;
+const noticeForm=document.getElementById('noticeForm'),unitSelect=document.getElementById('unitNumber'),formTitle=document.getElementById('formTitle'),formSubtitle=document.getElementById('formSubtitle'),dynamicInfo=document.getElementById('dynamicInfo'),moveOutWarning=document.getElementById('moveOutWarning'),vacateNoticeBlock=document.getElementById('vacateNoticeBlock'),auctionSaleBlock=document.getElementById('auctionSaleBlock'),photoBlock=document.getElementById('photoBlock'),photoHelp=document.getElementById('photoHelp'),messageBlock=document.getElementById('messageBlock'),employeeBox=document.getElementById('employeeBox'),employeeNameWrap=document.getElementById('employeeNameWrap'),employeeName=document.getElementById('employeeName'),moveOutIcon=document.getElementById('moveOutIcon'),statusBox=document.getElementById('status');
+function padUnit(num){return String(num).padStart(5,'0')}
+function populateUnits(){for(let i=UNIT_START;i<=UNIT_END;i++){const value=padUnit(i);if(UNAVAILABLE_UNITS.includes(value))continue;const opt=document.createElement('option');opt.value=value;opt.textContent=value;unitSelect.appendChild(opt)}}
+function selectedNoticeType(){const checked=document.querySelector('input[name="noticeType"]:checked');return checked?checked.value:'Move Out'}
+function showStatus(type,msg){if(!msg){statusBox.className='status';statusBox.textContent='';return}statusBox.className='status '+type;statusBox.textContent=msg}
+function updateFormMode(){const type=selectedNoticeType();moveOutWarning.classList.add('hidden');vacateNoticeBlock.classList.add('hidden');auctionSaleBlock.classList.add('hidden');photoBlock.classList.remove('hidden');messageBlock.classList.add('hidden');employeeBox.style.display='none';employeeNameWrap.classList.add('hidden');employeeName.required=false;moveOutIcon.style.display='none';
+if(type==='Move Out'){formTitle.textContent='Move Out';formSubtitle.textContent='Confirm your unit is empty and ready for office verification.';dynamicInfo.textContent='Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification.';moveOutWarning.classList.remove('hidden');employeeBox.style.display='block';photoHelp.textContent='Upload one clear photo of the unit in full view, empty, with the door open and unit number visible.';moveOutIcon.style.display='block'}
+else if(type==='Vacate Notice'){formTitle.textContent='Vacate Notice';formSubtitle.textContent='Provide written notice of your intended move out date.';dynamicInfo.textContent='Use this option to provide written notice before your move out is completed.';vacateNoticeBlock.classList.remove('hidden');photoBlock.classList.add('hidden');messageBlock.classList.remove('hidden')}
+else if(type==='Auction Sale'){formTitle.textContent='Auction Sale';formSubtitle.textContent='Provide auction sale or release-related information for office review.';dynamicInfo.textContent='Use this option only for auction sale or release-related communication with the office.';auctionSaleBlock.classList.remove('hidden');photoHelp.textContent='Upload supporting documentation or photos if applicable.';messageBlock.classList.remove('hidden')}}
+function updateEmployeeField(){const checked=document.querySelector('input[name="isEmployee"]:checked');const val=checked?checked.value:'';if(selectedNoticeType()==='Move Out'&&val==='Yes'){employeeNameWrap.classList.remove('hidden');employeeName.required=true}else{employeeNameWrap.classList.add('hidden');employeeName.required=false;employeeName.value=''}}
+function syncBackendNames(){document.getElementById('fullName').value=document.getElementById('customerName').value.trim()}
+function validateForm(){syncBackendNames();const type=selectedNoticeType();if(type==='Move Out'){const empChoice=document.querySelector('input[name="isEmployee"]:checked');if(!empChoice)return 'Please answer whether you are an employee of Aldine Storage.';if(empChoice.value==='Yes'&&!employeeName.value.trim())return 'Employee Name is required when employee is selected.'}return ''}
+document.querySelectorAll('input[name="noticeType"]').forEach(r=>r.addEventListener('change',()=>{updateFormMode();updateEmployeeField();showStatus('','')}));document.querySelectorAll('input[name="isEmployee"]').forEach(r=>r.addEventListener('change',updateEmployeeField));
+noticeForm.addEventListener('submit',function(e){e.preventDefault();const issue=validateForm();if(issue){showStatus('err',issue);return}showStatus('ok','Form is ready to submit. Add your Apps Script URL to enable live submission.')});
+noticeForm.addEventListener('reset',function(){setTimeout(()=>{document.querySelector('input[name="noticeType"][value="Move Out"]').checked=true;updateFormMode();updateEmployeeField();document.getElementById('noticeDate').valueAsDate=new Date();showStatus('','')},0)});
+document.getElementById('noticeDate').valueAsDate=new Date();populateUnits();updateFormMode();updateEmployeeField();
 </script>
 </body>
 </html>
