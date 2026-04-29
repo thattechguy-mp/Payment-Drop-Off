@@ -47,6 +47,39 @@ button.secondary{background:#e7eef9;color:#1f4e78}
 .employeeChoice input{width:auto}
 @media (max-width:700px){.heroInner{flex-direction:column}.heroGraphic{max-width:58%;width:170px}}
 
+
+.graphicWrap{display:none;position:relative;width:170px;max-width:38%;margin:0 auto}
+.graphicWrap.active{display:block;animation:fadeGraphic .22s ease-out both}
+.heroGraphic{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.18))}
+.soldStamp{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-16deg) scale(.65);
+  border:5px solid #d91f26;
+  color:#d91f26;
+  background:rgba(255,255,255,.82);
+  border-radius:12px;
+  padding:8px 18px;
+  font-weight:900;
+  font-size:30px;
+  letter-spacing:2px;
+  line-height:1;
+  text-transform:uppercase;
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+  opacity:0;
+}
+.graphicWrap.active .soldStamp{animation:soldStampIn .42s ease-out .08s forwards}
+@keyframes fadeGraphic{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes soldStampIn{
+  0%{opacity:0;transform:translate(-50%,-50%) rotate(-16deg) scale(.65)}
+  68%{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1.12)}
+  100%{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1)}
+}
+.sectionFocus{animation:sectionPulse .75s ease-out}
+@keyframes sectionPulse{0%{box-shadow:0 0 0 0 rgba(0,161,251,.34)}100%{box-shadow:0 0 0 12px rgba(0,161,251,0)}}
+@media (max-width:700px){.graphicWrap{max-width:58%;width:175px}.soldStamp{font-size:26px;padding:7px 15px}}
+
 @media (max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:26px}}
 </style>
 </head>
@@ -58,7 +91,16 @@ button.secondary{background:#e7eef9;color:#1f4e78}
     </div>
     <div class="hero">
       <div class="heroInner">
-        <img id="moveOutGraphic" class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" alt="Open clean storage unit">
+        <div id="moveOutGraphic" class="graphicWrap">
+          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" alt="Open clean storage unit">
+        </div>
+        <div id="vacateGraphic" class="graphicWrap">
+          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Closed storage unit">
+        </div>
+        <div id="auctionGraphic" class="graphicWrap">
+          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Auction sold storage unit">
+          <div class="soldStamp">SOLD</div>
+        </div>
         <div>
           <h1 id="formTitle">Vacate Notice & Move Out</h1>
           <p id="formSubtitle">Choose the notice type below and complete the required information.</p>
@@ -241,11 +283,13 @@ function toggleSections(){
   const employeeNameWrap = document.getElementById("employeeNameWrap");
   const employeeName = document.getElementById("employeeName");
   const moveOutGraphic = document.getElementById("moveOutGraphic");
+  const vacateGraphic = document.getElementById("vacateGraphic");
+  const auctionGraphic = document.getElementById("auctionGraphic");
 
   [mobileWrap, moveDateWrap, rentReminderWrap, vacateChecklist, vacateTopNotice, vacateYellowNotice, moveOutNoticeText, auctionNoticeText, signatureWrap, signatureNameWrap, employeeQuestionWrap, employeeNameWrap]
     .forEach(el => el.classList.add("hidden"));
   photoFieldWrap.classList.remove("hidden");
-  if(moveOutGraphic) moveOutGraphic.style.display = "none";
+  [moveOutGraphic, vacateGraphic, auctionGraphic].forEach(g => { if(g) g.classList.remove("active"); });
   if(employeeName) employeeName.required = false;
 
   document.getElementById("moveOutDate").required = false;
@@ -255,6 +299,7 @@ function toggleSections(){
   clearCanvas();
 
   if (type === "Vacate Notice") {
+    if(vacateGraphic) vacateGraphic.classList.add("active");
     title.textContent = "Vacate Notice";
     subtitle.textContent = "Provide your planned move out date and required acknowledgements.";
     intro.innerHTML = 'In order to terminate my Self-Service Rental Agreement, I understand I must give <strong>10 days written notice</strong>.<br>(Refer to paragraphs 9-10 of your Self-Service Rental Agreement for more details.)<br><br>To Whom It May Concern or representative of Aldine Storage, You are hereby notified that I, the undersigned will vacate storage space before or by the selected date.<br>I agree that my space will be swept, empty, and in good condition with my lock removed.';
@@ -276,11 +321,12 @@ function toggleSections(){
     intro.textContent = "Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification.";
     moveOutNoticeText.classList.remove("hidden");
     employeeQuestionWrap.classList.remove("hidden");
-    if(moveOutGraphic) moveOutGraphic.style.display = "block";
+    if(moveOutGraphic) moveOutGraphic.classList.add("active");
     document.getElementById("signatureName").required = false;
     nameLabel.textContent = "Customer Full Name";
     photoHint.textContent = "Upload one clear photo of the unit in full view, empty, with the door open and unit number visible.";
   } else if (type === "Auction Sale") {
+    if(auctionGraphic) auctionGraphic.classList.add("active");
     title.textContent = "Auction Sale";
     subtitle.textContent = "Auction buyers must complete this to request deposit return review.";
     intro.textContent = "Auction buyers must remove all contents and trash from the property to receive their deposit back.";
@@ -338,9 +384,29 @@ function fileToCompressedDataUrl(file, maxSize, quality) {
   });
 }
 
+
+function scrollToRelevantSection(){
+  const type = noticeType();
+  let target = document.getElementById("dynamicIntro");
+  if(type === "Move Out"){
+    target = document.getElementById("employeeQuestionWrap") || document.getElementById("dynamicIntro");
+  } else if(type === "Vacate Notice"){
+    target = document.getElementById("moveDateWrap") || document.getElementById("dynamicIntro");
+  } else if(type === "Auction Sale"){
+    target = document.getElementById("message") || document.getElementById("dynamicIntro");
+  }
+  if(!target) return;
+  setTimeout(() => {
+    target.scrollIntoView({behavior:"smooth", block:"center"});
+    target.classList.add("sectionFocus");
+    setTimeout(() => target.classList.remove("sectionFocus"), 900);
+  }, 140);
+}
+
 document.querySelectorAll('input[name="noticeType"]').forEach(el => el.addEventListener("change", () => {
   toggleSections();
   updateEmployeeFields();
+  scrollToRelevantSection();
 }));
 document.querySelectorAll('input[name="isEmployee"]').forEach(el => el.addEventListener("change", updateEmployeeFields));
 
