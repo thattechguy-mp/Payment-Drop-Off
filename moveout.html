@@ -3,557 +3,735 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vacate Notice & Move Out</title>
+<title>Vacate Notice / Move Out / Auction Sale</title>
 <style>
-body{margin:0;background:#edf2f8;font-family:Arial,Helvetica,sans-serif;color:#243142}
-.wrap{max-width:920px;margin:0 auto;padding:20px}
-.card{background:#fff;border:1px solid #d9e2f0;border-radius:12px;overflow:hidden}
-.header{padding:22px;text-align:center;border-bottom:1px solid #d9e2f0}
-.hero{padding:26px;background:#4f81bc;color:#fff;text-align:center}
-.hero h1{margin:0;font-size:32px}
-.hero p{margin:10px 0 0;font-size:16px;line-height:1.6}
-.section{padding:22px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.full{grid-column:1 / -1}
-label{display:block;font-size:14px;font-weight:700;margin:0 0 6px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px;box-sizing:border-box;background:#fff}
-.radios{display:flex;gap:12px;flex-wrap:wrap}
-.radios label{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;margin:0}
-.radios input{width:auto}
-.note{background:#f4f8ff;border:1px solid #d3dff3;border-radius:8px;padding:16px;line-height:1.65;font-size:14px}
-.warn{background:#fff5f5;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:14px;line-height:1.6;font-size:14px}
-.hint{font-size:12px;color:#667085;line-height:1.5;margin-top:4px}
-.checkline{display:flex;gap:10px;align-items:flex-start;padding:10px 0}
-.checkline input{width:auto;margin-top:3px}
-.photoWrap{display:none;margin-top:10px}
-.photoWrap img{max-width:100%;max-height:260px;border:1px solid #cbd5e1;border-radius:8px}
-.exampleBtn{padding:8px 12px;background:#111827;color:#fff;border-radius:8px;font-size:13px;cursor:pointer;display:inline-block}
-.sigbox{border:1px solid #cbd5e1;border-radius:8px;background:#fff}
-#signatureCanvas{width:100%;height:180px;display:block;touch-action:none;cursor:crosshair}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-button{background:#5E85C4;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:700;cursor:pointer}
-button.secondary{background:#e7eef9;color:#1f4e78}
-.status{margin-top:14px;font-size:14px}
-.success{display:none;margin-top:18px;background:#eefbf2;border:1px solid #b9e7c5;color:#0b7a34;border-radius:10px;padding:18px;line-height:1.7}
-.footer{padding:18px 22px;text-align:center;font-size:13px;line-height:1.6;color:#666;border-top:1px solid #d9e2f0}
-.hidden{display:none}
-.yellowbox{background:#fff200;border:1px solid #e1cf00;border-radius:8px;padding:14px;line-height:1.6;font-size:14px;color:#111827;font-weight:700}
-
-.heroInner{display:flex;align-items:center;justify-content:center;gap:22px}
-.heroGraphic{display:none;width:150px;max-width:34%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.18))}
-.employeeBox{background:#f4f8ff;border:1px solid #d3dff3;border-radius:10px;padding:16px;line-height:1.55}
-.employeeChoice{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
-.employeeChoice label{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;margin:0}
-.employeeChoice input{width:auto}
-@media (max-width:700px){.heroInner{flex-direction:column}.heroGraphic{max-width:58%;width:170px}}
-
-
-.graphicWrap{display:none;position:relative;width:170px;max-width:38%;margin:0 auto}
-.graphicWrap.active{display:block;animation:fadeGraphic .22s ease-out both}
-.heroGraphic{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.18))}
+:root{
+  --blue:#5E85C4;
+  --sky:#38a5f5;
+  --navy:#27245f;
+  --ink:#273244;
+  --muted:#667085;
+  --line:#d5dbe7;
+  --soft:#f4f8ff;
+  --danger:#9f1d1d;
+  --green:#b8f08f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#eef4fb;
+  color:var(--ink);
+}
+.page{
+  max-width:920px;
+  margin:26px auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 12px 34px rgba(16,24,40,.10);
+  overflow:hidden;
+}
+.logoBand{
+  background:#fff;
+  text-align:center;
+  padding:22px 20px 18px;
+}
+.logoBand img{max-width:350px;width:72%;height:auto}
+.hero{
+  background:linear-gradient(135deg,var(--sky),var(--navy));
+  color:#fff;
+  text-align:center;
+  padding:36px 26px 44px;
+}
+.heroGraphicWrap{
+  display:none;
+  position:relative;
+  width:190px;
+  max-width:60%;
+  margin:0 auto 22px;
+  animation:fadeIn .22s ease-out both;
+}
+.heroGraphicWrap.active{display:block}
+.heroGraphic{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.22));
+}
 .soldStamp{
   position:absolute;
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%) rotate(-16deg) scale(.65);
-  border:5px solid #d91f26;
-  color:#d91f26;
-  background:rgba(255,255,255,.82);
+  transform:translate(-50%,-50%) rotate(-14deg);
+  color:#d71920;
+  border:6px solid #d71920;
+  background:rgba(255,255,255,.86);
   border-radius:12px;
   padding:8px 18px;
   font-weight:900;
-  font-size:30px;
+  font-size:34px;
   letter-spacing:2px;
-  line-height:1;
-  text-transform:uppercase;
   box-shadow:0 8px 18px rgba(0,0,0,.18);
-  opacity:0;
 }
-.graphicWrap.active .soldStamp{animation:soldStampIn .42s ease-out .08s forwards}
-@keyframes fadeGraphic{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-@keyframes soldStampIn{
-  0%{opacity:0;transform:translate(-50%,-50%) rotate(-16deg) scale(.65)}
-  68%{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1.12)}
-  100%{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1)}
+h1{
+  margin:0;
+  font-size:42px;
+  line-height:1.08;
 }
-.sectionFocus{animation:sectionPulse .75s ease-out}
-@keyframes sectionPulse{0%{box-shadow:0 0 0 0 rgba(0,161,251,.34)}100%{box-shadow:0 0 0 12px rgba(0,161,251,0)}}
-@media (max-width:700px){.graphicWrap{max-width:58%;width:175px}.soldStamp{font-size:26px;padding:7px 15px}}
-
-@media (max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:26px}}
+.hero p{
+  margin:12px auto 0;
+  max-width:640px;
+  font-size:18px;
+  line-height:1.45;
+}
+.formBody{padding:34px 44px 40px}
+.noticeGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:24px;
+}
+.choice{
+  border:2px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  background:#fff;
+  font-weight:800;
+}
+.choice input{width:22px;height:22px}
+.choice:has(input:checked){
+  border-color:var(--blue);
+  background:#f1f6ff;
+  box-shadow:0 0 0 4px rgba(94,133,196,.13);
+}
+.note{
+  background:#f7fbff;
+  border:1px solid var(--line);
+  border-left:6px solid var(--sky);
+  border-radius:14px;
+  padding:17px 18px;
+  font-size:17px;
+  line-height:1.55;
+  margin:0 0 24px;
+}
+.yellowNotice{
+  background:#fff9df;
+  border:1px solid #e5c75d;
+  border-radius:14px;
+  padding:18px;
+  line-height:1.55;
+  margin-bottom:22px;
+  color:#533f03;
+}
+.redNotice{
+  background:#fff4f4;
+  border:1px solid #f3b7b7;
+  border-radius:14px;
+  padding:18px;
+  line-height:1.55;
+  margin-bottom:22px;
+  color:#63171b;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.full{grid-column:1/-1}
+label{
+  display:block;
+  font-weight:800;
+  margin:0 0 8px;
+  color:#273244;
+}
+.req{color:#b42318}
+input,select,textarea{
+  width:100%;
+  border:2px solid #cfd7e5;
+  border-radius:14px;
+  padding:15px 16px;
+  font-size:18px;
+  background:#fff;
+  color:#111827;
+}
+textarea{min-height:120px;resize:vertical}
+.help{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+  margin-top:7px;
+}
+.hidden{display:none!important}
+.employeeBox{
+  background:#f2f7ff;
+  border:1px solid #d4e1f5;
+  border-radius:16px;
+  padding:18px;
+}
+.radioRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.radioRow label{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fff;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:0;
+}
+.radioRow input{width:18px;height:18px}
+.checkCard{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px 16px;
+  margin:12px 0;
+  background:#fff;
+  display:flex;
+  gap:12px;
+  line-height:1.45;
+}
+.checkCard input{width:20px;height:20px;flex:0 0 auto;margin-top:2px}
+.signatureBox{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  background:#fafcff;
+}
+canvas{
+  width:100%;
+  height:170px;
+  display:block;
+  background:#fff;
+  border:2px dashed #cfd7e5;
+  border-radius:12px;
+  touch-action:none;
+}
+.actions{
+  display:flex;
+  gap:16px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+button{
+  border:0;
+  border-radius:14px;
+  font-size:18px;
+  font-weight:800;
+  padding:16px 24px;
+  cursor:pointer;
+}
+.primary{background:linear-gradient(135deg,var(--sky),var(--navy));color:#fff}
+.secondary{background:#e5e7eb;color:#111827}
+.dark{background:#111827;color:#fff}
+.status{
+  margin-top:18px;
+  padding:14px 16px;
+  border-radius:12px;
+  display:none;
+  font-weight:700;
+}
+.status.show{display:block}
+.status.error{background:#fff1f1;color:#9f1d1d;border:1px solid #f3b7b7}
+.status.success{background:#ecfdf3;color:#027a48;border:1px solid #abefc6}
+.exampleImg{
+  display:none;
+  max-width:100%;
+  margin-top:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.footer{
+  border-top:1px solid var(--line);
+  text-align:center;
+  padding:30px 26px 38px;
+  color:#667085;
+  line-height:1.6;
+  font-size:15px;
+}
+.footer strong{color:#344054}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){
+  .page{margin:0;border-radius:0;border-left:0;border-right:0}
+  .formBody{padding:28px 22px 34px}
+  .noticeGrid{grid-template-columns:1fr 1fr}
+  .grid{grid-template-columns:1fr}
+  h1{font-size:34px}
+  .hero{padding:30px 20px 36px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="header">
-      <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_logo_9-1-2022_.png" alt="Right Move Storage" style="width:190px;max-width:100%;height:auto;border:0;">
+<div class="page">
+  <div class="logoBand">
+    <img src="https://res.cloudinary.com/aldine/image/upload/v1663433242/Right_Move_Logo_9-1-2022_.png" alt="Right Move Storage">
+  </div>
+
+  <div class="hero">
+    <div id="vacateGraphic" class="heroGraphicWrap active">
+      <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Closed storage unit">
     </div>
-    <div class="hero">
-      <div class="heroInner">
-        <div id="moveOutGraphic" class="graphicWrap">
-          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" alt="Open clean storage unit">
-        </div>
-        <div id="vacateGraphic" class="graphicWrap">
-          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Closed storage unit">
-        </div>
-        <div id="auctionGraphic" class="graphicWrap">
-          <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Auction sold storage unit">
-          <div class="soldStamp">SOLD</div>
-        </div>
-        <div>
-          <h1 id="formTitle">Vacate Notice & Move Out</h1>
-          <p id="formSubtitle">Choose the notice type below and complete the required information.</p>
-        </div>
+    <div id="moveOutGraphic" class="heroGraphicWrap">
+      <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" alt="Open clean storage unit">
+    </div>
+    <div id="auctionGraphic" class="heroGraphicWrap">
+      <img class="heroGraphic" src="https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png" alt="Auction sold storage unit">
+      <div class="soldStamp">SOLD</div>
+    </div>
+    <h1 id="formTitle">Vacate Notice</h1>
+    <p id="formSubtitle">Provide written notice of your intended move out date.</p>
+  </div>
+
+  <form id="noticeForm" class="formBody">
+    <div class="noticeGrid">
+      <label class="choice"><input type="radio" name="noticeType" value="Vacate Notice" checked> Vacate Notice</label>
+      <label class="choice"><input type="radio" name="noticeType" value="Move Out"> Move Out</label>
+      <label class="choice"><input type="radio" name="noticeType" value="Auction Sale"> Auction Sale</label>
+    </div>
+
+    <div id="dynamicIntro" class="note"></div>
+
+    <div id="employeeBox" class="employeeBox hidden full" style="margin-bottom:22px;">
+      <label>Are you an employee of Aldine Storage? <span class="req">*</span></label>
+      <div class="radioRow">
+        <label><input type="radio" name="isEmployee" value="Yes"> Yes</label>
+        <label><input type="radio" name="isEmployee" value="No"> No</label>
+      </div>
+      <div id="employeeNameWrap" class="hidden" style="margin-top:16px;">
+        <label for="employeeName">Employee Name <span class="req">*</span></label>
+        <input id="employeeName" name="employeeName" autocomplete="name">
       </div>
     </div>
 
-    <div class="section">
-      <form id="noticeForm">
-        <div class="grid">
-          <div class="full">
-            <label>Notice Type</label>
-            <div class="radios">
-              <label><input type="radio" name="noticeType" value="Vacate Notice" required> Vacate Notice</label>
-              <label><input type="radio" name="noticeType" value="Move Out"> Move Out</label>
-              <label><input type="radio" name="noticeType" value="Auction Sale"> Auction Sale</label>
-            </div>
-          </div>
+    <div class="grid">
+      <div class="full">
+        <label for="fullName" id="fullNameLabel">Customer Full Name <span class="req">*</span></label>
+        <input id="fullName" name="fullName" autocomplete="name" required>
+      </div>
 
-          <div class="full">
-            <div class="note" id="dynamicIntro">Select a notice type to see the required instructions.</div>
-          </div>
+      <div>
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
 
-          <div class="full hidden" id="employeeQuestionWrap">
-            <div class="employeeBox">
-              <label>Are you an employee of Aldine Storage?</label>
-              <div class="employeeChoice">
-                <label><input type="radio" name="isEmployee" value="Yes"> Yes</label>
-                <label><input type="radio" name="isEmployee" value="No"> No</label>
-              </div>
-              <div id="employeeNameWrap" class="hidden" style="margin-top:14px;">
-                <label for="employeeName">Employee Name</label>
-                <input id="employeeName">
-              </div>
-            </div>
-          </div>
+      <div>
+        <label for="mobileNumber">Mobile Number <span id="mobileReq" class="req hidden">*</span></label>
+        <input id="mobileNumber" name="mobileNumber" inputmode="tel" autocomplete="tel" placeholder="(281) 233-0400">
+      </div>
 
-          <div class="full hidden" id="vacateTopNotice">
-            <div class="warn"><strong>10 Days Notice Required</strong></div>
-          </div>
+      <div>
+        <label for="unitNumber">Unit Number <span class="req">*</span></label>
+        <select id="unitNumber" name="unitNumber" required></select>
+      </div>
 
-          <div>
-            <label for="fullName" id="nameLabel">Customer Full Name</label>
-            <input id="fullName" required>
-          </div>
-          <div>
-            <label for="unitNumber">Unit Number</label>
-            <input id="unitNumber" maxlength="5" inputmode="numeric" placeholder="00001" required>
-          </div>
-          <div id="emailWrap">
-            <label for="email">Email Address</label>
-            <input id="email" type="email" required>
-          </div>
-          <div id="mobileWrap" class="hidden">
-            <label for="mobileNumber">Mobile Number</label>
-            <input id="mobileNumber" inputmode="numeric" maxlength="14" placeholder="(281)233-0400">
-          </div>
-          <div id="moveDateWrap" class="hidden">
-            <label for="moveOutDate">Planned Move Out Date</label>
-            <input id="moveOutDate" type="date">
-            <div class="hint">Required for Vacate Notice.</div>
-          </div>
+      <div id="moveDateWrap">
+        <label for="moveOutDate">Move Out Date <span class="req">*</span></label>
+        <input id="moveOutDate" name="moveOutDate" type="date">
+      </div>
 
-          <div class="full hidden" id="rentReminderWrap">
-            <div class="warn" id="rentReminder"></div>
-          </div>
+      <div id="messageWrap" class="full hidden">
+        <label for="message">Auction / Office Note</label>
+        <textarea id="message" name="message" placeholder="Optional note for office review."></textarea>
+      </div>
 
-          <div class="full hidden" id="vacateChecklist">
-            <div class="checkline"><input type="checkbox" id="allItemsRemoved"><label for="allItemsRemoved">I understand that I must remove all items from the unit before vacating.</label></div>
-            <div class="checkline"><input type="checkbox" id="lockRemoved"><label for="lockRemoved">I understand that I must remove my lock and leave the unit door open when finished.</label></div>
-            <div class="checkline"><input type="checkbox" id="trashRemoved"><label for="trashRemoved">I understand that all trash and discarded items must be removed from the property. No use of the company dumpster is allowed. Failure to remove trash may result in a $50.00 or greater removal charge.</label></div>
-          </div>
+      <div id="vacateNotice" class="full yellowNotice">
+        <strong>10 Days Notice Required</strong><br><br>
+        In order to terminate my Self-Service Rental Agreement, I understand I must give 10 days written notice.
+        Refer to paragraphs 9-10 of your Self-Service Rental Agreement for more details.
+        <br><br>
+        To Whom It May Concern or representative of Aldine Storage, you are hereby notified that I, the undersigned,
+        will vacate storage space before or by the selected date. I agree that my space will be swept, empty, and in
+        good condition with my lock removed.
+      </div>
 
-          <div class="full hidden" id="vacateYellowNotice">
-            <div class="yellowbox">
-              I also understand that if I have any trash or other items that I wish to discard, I must remove the trash or items from property. All contents are to be removed from my space and are to be removed from property. Violation of this will result in a fine.
-            </div>
-          </div>
+      <div id="moveNotice" class="full redNotice hidden">
+        All items and trash must be removed from the property and may not be left in your unit, on the property, or in or near the company dumpster.
+        Failure to remove items may result in a $50.00 or greater removal charge.
+        <br><br>
+        The office will verify your move out and provide the final move out receipt once verified. If there are any issues, the office will contact you.
+      </div>
 
-          <div class="full hidden" id="moveOutNoticeText">
-            <div class="warn">
-              All items and trash must be removed from the property and may not be left on the property or in or near the company dumpster. Failure to remove items may result in a $50.00 or greater removal charge.<br><br>
-              The office will verify the move out and provide the final move out receipt once verified. If there are any issues, the office will contact you to resolve them.
-            </div>
-          </div>
+      <div id="auctionNotice" class="full note hidden">
+        Use this option only for auction sale or release-related communication with the office.
+      </div>
 
-          <div class="full hidden" id="auctionNoticeText">
-            <div class="warn">
-              Auction buyers must fully clean the unit to receive their $250.00 deposit back. No use of the company dumpster is allowed. All discarded items and trash must be removed from the property.
-            </div>
-          </div>
+      <div id="vacateChecks" class="full">
+        <label class="checkCard"><input type="checkbox" id="allItemsRemoved"> I agree my storage space will be empty, swept, and free of all items.</label>
+        <label class="checkCard"><input type="checkbox" id="lockRemoved"> I agree my lock will be removed and the unit will be left accessible for inspection.</label>
+        <label class="checkCard"><input type="checkbox" id="trashRemoved"> I understand trash or discarded items may not be left on the property or in/near the dumpster.</label>
+      </div>
 
-          <div class="full" id="photoFieldWrap">
-            <label for="unitPhoto">Upload Photo</label>
-            <input id="unitPhoto" type="file" accept="image/*" capture="environment">
-            <div class="hint" id="photoHint">Upload one clear photo of the empty unit with the door open and the unit number visible.</div>
-            <div style="margin-top:8px;"><span class="exampleBtn" id="showExampleBtn">View Example</span></div>
-            <div class="photoWrap" id="photoPreviewWrap"><img id="photoPreview" alt="Preview"></div>
-          </div>
+      <div class="full">
+        <label for="unitPhoto" id="photoLabel">Upload Photo <span class="req">*</span></label>
+        <input id="unitPhoto" name="unitPhotoFile" type="file" accept="image/*,.pdf" required>
+        <div class="help" id="photoHelp"></div>
+        <button type="button" class="dark" id="exampleBtn" style="margin-top:14px;">View Example</button>
+        <img id="exampleImg" class="exampleImg" src="https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png" alt="Example image">
+      </div>
 
-          <div class="full hidden" id="signatureWrap">
-            <label>Signature</label>
-            <div class="sigbox"><canvas id="signatureCanvas"></canvas></div>
-            <div class="actions">
-              <button type="button" class="secondary" id="clearSignature">Clear Signature</button>
-            </div>
-          </div>
-          <div class="hidden" id="signatureNameWrap">
-            <label for="signatureName">Typed Signature Name</label>
-            <input id="signatureName">
-          </div>
+      <div id="signatureWrap" class="full signatureBox">
+        <label>Draw Signature <span class="req">*</span></label>
+        <canvas id="signatureCanvas"></canvas>
+        <div class="help">Sign above, then type your full legal name below.</div>
+        <button type="button" id="clearSignature" class="secondary" style="margin-top:12px;">Clear Signature</button>
+      </div>
 
-          <div class="full">
-            <button type="submit">Submit Notice</button>
-            <div id="status" class="status"></div>
-          </div>
-        </div>
-      </form>
-
-      <div id="successBox" class="success">
-        Thank you. Your form was submitted successfully. The office will review it and contact you if anything further is needed.
+      <div id="signatureNameWrap" class="full">
+        <label for="signatureName">Type Full Legal Name <span class="req">*</span></label>
+        <input id="signatureName" name="signatureName" autocomplete="name">
       </div>
     </div>
 
-    <div class="footer">
-      <strong>Right Move Storage – Aldine</strong><br>
-      21667 Aldine Westfield Rd<br>
-      Humble, TX 77338<br>
-      Phone: (281) 233-0400 | Email: aldine@rightmovestorage.com<br>
-      www.rightmovestorage.com<br><br>
-      © 2026 Right Move Storage. Form created, developed, and maintained by That Tech Guy.<br>
-      Created by Mark Point – That Tech Guy | Web • Code • Automation
+    <input type="hidden" id="signatureImage" name="signatureImage">
+
+    <div class="actions">
+      <button type="reset" class="secondary">Clear Form</button>
+      <button type="submit" class="primary" id="submitBtn">Submit Notice</button>
     </div>
+
+    <div id="status" class="status"></div>
+  </form>
+
+  <div class="footer">
+    <strong>Right Move Storage – Aldine</strong><br>
+    21667 Aldine Westfield Rd<br>
+    Humble, TX 77338<br>
+    Phone: (281) 233-0400 | Email: aldine@rightmovestorage.com<br>
+    www.rightmovestorage.com<br><br>
+    © 2026 Right Move Storage. Form created, developed, and maintained by That Tech Guy.<br>
+    Created by Mark Point – That Tech Guy | Web • Code • Automation
   </div>
 </div>
 
 <script>
+/*
+  Replace this with the deployed Google Apps Script Web App URL.
+  Must be deployed as:
+  Execute as: Me
+  Who has access: Anyone
+*/
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
-const EXAMPLE_IMAGE_URL = "REPLACE_WITH_YOUR_EXAMPLE_IMAGE_URL";
-const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
 
-let unitPhotoData = "";
+const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
+const TRANSPARENT_SIGNATURE =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=";
+
+const form = document.getElementById("noticeForm");
+const statusBox = document.getElementById("status");
+const submitBtn = document.getElementById("submitBtn");
+const canvas = document.getElementById("signatureCanvas");
+const ctx = canvas.getContext("2d");
+let drawing = false;
 let hasSignature = false;
 
-function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-function formatPhone(val){
-  let d = String(val || "").replace(/\D/g,'').slice(0,10);
-  if(!d) return "";
-  if(d.length < 4) return "(" + d;
-  if(d.length < 7) return "(" + d.slice(0,3) + ")" + d.slice(3);
-  return "(" + d.slice(0,3) + ")" + d.slice(3,6) + "-" + d.slice(6);
+function populateUnits(){
+  const select = document.getElementById("unitNumber");
+  select.innerHTML = '<option value="">Select Unit Number</option>';
+  for(let i=1;i<=622;i++){
+    const unit = String(i).padStart(5,"0");
+    if(UNAVAILABLE_UNITS.has(unit)) continue;
+    const opt = document.createElement("option");
+    opt.value = unit;
+    opt.textContent = unit;
+    select.appendChild(opt);
+  }
 }
-function status(msg, good=false){
-  const el = document.getElementById("status");
-  el.textContent = msg;
-  el.style.color = good ? "#0b7a34" : "#b91c1c";
-}
+
 function noticeType(){
-  return document.querySelector('input[name="noticeType"]:checked')?.value || "";
+  return document.querySelector('input[name="noticeType"]:checked')?.value || "Vacate Notice";
 }
-function toggleSections(){
+
+function setStatus(msg,type){
+  statusBox.textContent = msg;
+  statusBox.className = "status show " + (type || "error");
+}
+
+function clearStatus(){
+  statusBox.textContent = "";
+  statusBox.className = "status";
+}
+
+function setMode(){
+  clearStatus();
   const type = noticeType();
-  const title = document.getElementById("formTitle");
-  const subtitle = document.getElementById("formSubtitle");
-  const intro = document.getElementById("dynamicIntro");
-  const mobileWrap = document.getElementById("mobileWrap");
-  const moveDateWrap = document.getElementById("moveDateWrap");
-  const rentReminderWrap = document.getElementById("rentReminderWrap");
-  const vacateChecklist = document.getElementById("vacateChecklist");
-  const vacateTopNotice = document.getElementById("vacateTopNotice");
-  const vacateYellowNotice = document.getElementById("vacateYellowNotice");
-  const moveOutNoticeText = document.getElementById("moveOutNoticeText");
-  const auctionNoticeText = document.getElementById("auctionNoticeText");
-  const signatureWrap = document.getElementById("signatureWrap");
-  const signatureNameWrap = document.getElementById("signatureNameWrap");
-  const nameLabel = document.getElementById("nameLabel");
-  const photoHint = document.getElementById("photoHint");
-  const photoFieldWrap = document.getElementById("photoFieldWrap");
-  const employeeQuestionWrap = document.getElementById("employeeQuestionWrap");
-  const employeeNameWrap = document.getElementById("employeeNameWrap");
-  const employeeName = document.getElementById("employeeName");
-  const moveOutGraphic = document.getElementById("moveOutGraphic");
-  const vacateGraphic = document.getElementById("vacateGraphic");
-  const auctionGraphic = document.getElementById("auctionGraphic");
 
-  [mobileWrap, moveDateWrap, rentReminderWrap, vacateChecklist, vacateTopNotice, vacateYellowNotice, moveOutNoticeText, auctionNoticeText, signatureWrap, signatureNameWrap, employeeQuestionWrap, employeeNameWrap]
-    .forEach(el => el.classList.add("hidden"));
-  photoFieldWrap.classList.remove("hidden");
-  [moveOutGraphic, vacateGraphic, auctionGraphic].forEach(g => { if(g) g.classList.remove("active"); });
-  if(employeeName) employeeName.required = false;
+  document.querySelectorAll(".heroGraphicWrap").forEach(el => el.classList.remove("active"));
+  document.getElementById("vacateGraphic").classList.toggle("active", type === "Vacate Notice");
+  document.getElementById("moveOutGraphic").classList.toggle("active", type === "Move Out");
+  document.getElementById("auctionGraphic").classList.toggle("active", type === "Auction Sale");
 
-  document.getElementById("moveOutDate").required = false;
-  document.getElementById("mobileNumber").required = false;
-  document.getElementById("signatureName").required = false;
+  document.getElementById("formTitle").textContent = type;
+  document.getElementById("formSubtitle").textContent =
+    type === "Vacate Notice" ? "Provide written notice of your intended move out date." :
+    type === "Move Out" ? "Confirm your unit is empty and ready for office verification." :
+    "Provide auction sale or release-related information for office review.";
+
+  document.getElementById("dynamicIntro").textContent =
+    type === "Vacate Notice" ? "Use this option to provide written notice before your move out is completed." :
+    type === "Move Out" ? "Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification." :
+    "Use this option only for auction sale or release-related communication with the office.";
+
+  const isMove = type === "Move Out";
+  const isVacate = type === "Vacate Notice";
+  const isAuction = type === "Auction Sale";
+
+  document.getElementById("employeeBox").classList.toggle("hidden", !isMove);
+  document.getElementById("moveDateWrap").classList.toggle("hidden", !isVacate);
+  document.getElementById("messageWrap").classList.toggle("hidden", !isAuction);
+  document.getElementById("vacateNotice").classList.toggle("hidden", !isVacate);
+  document.getElementById("moveNotice").classList.toggle("hidden", !isMove);
+  document.getElementById("auctionNotice").classList.toggle("hidden", !isAuction);
+  document.getElementById("vacateChecks").classList.toggle("hidden", !isVacate);
+  document.getElementById("signatureWrap").classList.toggle("hidden", !isVacate);
+  document.getElementById("signatureNameWrap").classList.toggle("hidden", !isVacate);
+  document.getElementById("mobileReq").classList.toggle("hidden", !isAuction);
+
+  document.getElementById("moveOutDate").required = isVacate;
+  document.getElementById("signatureName").required = isVacate;
+  document.getElementById("mobileNumber").required = isAuction;
+
+  document.getElementById("photoHelp").textContent =
+    isVacate ? "Upload one clear photo if available showing the unit condition. This form requires an upload for confirmation records." :
+    isMove ? "Upload one clear photo showing the empty cleaned unit with the door open and the unit number visible." :
+    "Upload one clear supporting photo or document related to the auction sale / release request.";
+
+  updateEmployeeFields();
+  resizeCanvas();
+}
+
+function updateEmployeeFields(){
+  const type = noticeType();
+  const choice = document.querySelector('input[name="isEmployee"]:checked')?.value || "";
+  const showEmployeeName = type === "Move Out" && choice === "Yes";
+  document.getElementById("employeeNameWrap").classList.toggle("hidden", !showEmployeeName);
+  document.getElementById("employeeName").required = showEmployeeName;
+  if(!showEmployeeName) document.getElementById("employeeName").value = "";
+}
+
+function formatPhone(value){
+  const digits = String(value || "").replace(/\D/g,"").slice(0,10);
+  if(digits.length <= 3) return digits;
+  if(digits.length <= 6) return `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+}
+
+function resizeCanvas(){
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  const rect = canvas.getBoundingClientRect();
+  if(!rect.width || !rect.height) return;
+  const current = canvas.toDataURL();
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#111827";
+  // Do not redraw old signature after resize; signature must be redrawn if window size changes.
+}
+
+function pos(e){
+  const rect = canvas.getBoundingClientRect();
+  const t = e.touches ? e.touches[0] : e;
+  return {x:t.clientX - rect.left, y:t.clientY - rect.top};
+}
+
+function startDraw(e){
+  if(noticeType() !== "Vacate Notice") return;
+  e.preventDefault();
+  drawing = true;
+  hasSignature = true;
+  const p = pos(e);
+  ctx.beginPath();
+  ctx.moveTo(p.x,p.y);
+}
+
+function draw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  const p = pos(e);
+  ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+}
+
+function stopDraw(){
+  drawing = false;
+  document.getElementById("signatureImage").value = hasSignature ? canvas.toDataURL("image/png") : "";
+}
+
+function clearSignature(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   hasSignature = false;
-  clearCanvas();
+  document.getElementById("signatureImage").value = "";
+}
 
-  if (type === "Vacate Notice") {
-    if(vacateGraphic) vacateGraphic.classList.add("active");
-    title.textContent = "Vacate Notice";
-    subtitle.textContent = "Provide your planned move out date and required acknowledgements.";
-    intro.innerHTML = 'In order to terminate my Self-Service Rental Agreement, I understand I must give <strong>10 days written notice</strong>.<br>(Refer to paragraphs 9-10 of your Self-Service Rental Agreement for more details.)<br><br>To Whom It May Concern or representative of Aldine Storage, You are hereby notified that I, the undersigned will vacate storage space before or by the selected date.<br>I agree that my space will be swept, empty, and in good condition with my lock removed.';
-    moveDateWrap.classList.remove("hidden");
-    vacateTopNotice.classList.remove("hidden");
-    vacateChecklist.classList.remove("hidden");
-    vacateYellowNotice.classList.remove("hidden");
-    signatureWrap.classList.remove("hidden");
-    signatureNameWrap.classList.remove("hidden");
-    photoFieldWrap.classList.add("hidden");
-    setTimeout(resizeCanvas, 0);
-    document.getElementById("moveOutDate").required = true;
-    document.getElementById("signatureName").required = true;
-    nameLabel.textContent = "Customer Full Name";
-    photoHint.textContent = "No photo is required for Vacate Notice.";
-  } else if (type === "Move Out") {
-    title.textContent = "Move Out";
-    subtitle.textContent = "Confirm your unit is empty and ready for office verification.";
-    intro.textContent = "Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification.";
-    moveOutNoticeText.classList.remove("hidden");
-    employeeQuestionWrap.classList.remove("hidden");
-    if(moveOutGraphic) moveOutGraphic.classList.add("active");
-    document.getElementById("signatureName").required = false;
-    nameLabel.textContent = "Customer Full Name";
-    photoHint.textContent = "Upload one clear photo of the unit in full view, empty, with the door open and unit number visible.";
-  } else if (type === "Auction Sale") {
-    if(auctionGraphic) auctionGraphic.classList.add("active");
-    title.textContent = "Auction Sale";
-    subtitle.textContent = "Auction buyers must complete this to request deposit return review.";
-    intro.textContent = "Auction buyers must remove all contents and trash from the property to receive their deposit back.";
-    auctionNoticeText.classList.remove("hidden");
-    mobileWrap.classList.remove("hidden");
-    document.getElementById("mobileNumber").required = true;
-    nameLabel.textContent = "Auction Buyer Full Name";
-    photoHint.textContent = "Upload one clear photo showing the empty cleaned unit with the door open and the unit number visible.";
-  } else {
-    title.textContent = "Vacate Notice & Move Out";
-    subtitle.textContent = "Choose the notice type below and complete the required information.";
-    intro.textContent = "Select a notice type to see the required instructions.";
-  }
-}
-function updateRentReminder(){
-  const wrap = document.getElementById("rentReminderWrap");
-  const box = document.getElementById("rentReminder");
-  const val = document.getElementById("moveOutDate").value;
-  const type = noticeType();
-  if(type !== "Vacate Notice" || !val){
-    wrap.classList.add("hidden");
-    return;
-  }
-  const selected = new Date(val + "T00:00:00");
-  const today = new Date();
-  if(selected.getMonth() !== today.getMonth() || selected.getFullYear() !== today.getFullYear()){
-    box.textContent = "Reminder: Rent is due on the first of each month and is not prorated under your rental agreement. If possible, please move out by the end of the current month to avoid additional monthly charges.";
-    wrap.classList.remove("hidden");
-  } else {
-    wrap.classList.add("hidden");
-  }
-}
-function fileToCompressedDataUrl(file, maxSize, quality) {
-  return new Promise((resolve, reject) => {
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
     const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        let width = img.width, height = img.height;
-        const ratio = Math.min(1, maxSize / Math.max(width, height));
-        width = Math.round(width * ratio);
-        height = Math.round(height * ratio);
-        const canvas = document.createElement("canvas");
-        canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,width,height);
-        ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
-      };
-      img.onerror = reject;
-      img.src = reader.result;
-    };
+    reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
 
-
-function scrollToRelevantSection(){
+function validate(){
   const type = noticeType();
-  let target = document.getElementById("dynamicIntro");
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const unit = document.getElementById("unitNumber").value;
+  const photo = document.getElementById("unitPhoto").files[0];
+
+  if(!fullName) return "Customer Full Name is required.";
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "A valid email address is required.";
+  if(!unit) return "Unit Number is required.";
+  if(!photo) return "A photo or PDF upload is required.";
+
+  if(type === "Vacate Notice"){
+    if(!document.getElementById("moveOutDate").value) return "Move Out Date is required.";
+    if(!document.getElementById("allItemsRemoved").checked || !document.getElementById("lockRemoved").checked || !document.getElementById("trashRemoved").checked){
+      return "All Vacate Notice acknowledgements are required.";
+    }
+    if(!hasSignature || !document.getElementById("signatureName").value.trim()){
+      return "Signature and typed full legal name are required for Vacate Notice.";
+    }
+  }
+
   if(type === "Move Out"){
-    target = document.getElementById("employeeQuestionWrap") || document.getElementById("dynamicIntro");
-  } else if(type === "Vacate Notice"){
-    target = document.getElementById("moveDateWrap") || document.getElementById("dynamicIntro");
-  } else if(type === "Auction Sale"){
-    target = document.getElementById("message") || document.getElementById("dynamicIntro");
+    const employeeChoice = document.querySelector('input[name="isEmployee"]:checked')?.value || "";
+    if(!employeeChoice) return "Please answer whether you are an employee of Aldine Storage.";
+    if(employeeChoice === "Yes" && !document.getElementById("employeeName").value.trim()) return "Employee Name is required.";
   }
-  if(!target) return;
-  setTimeout(() => {
-    target.scrollIntoView({behavior:"smooth", block:"center"});
-    target.classList.add("sectionFocus");
-    setTimeout(() => target.classList.remove("sectionFocus"), 900);
-  }, 140);
+
+  if(type === "Auction Sale"){
+    const mobileDigits = document.getElementById("mobileNumber").value.replace(/\D/g,"");
+    if(mobileDigits.length !== 10) return "A valid mobile number is required for Auction Sale.";
+  }
+
+  return "";
 }
 
-document.querySelectorAll('input[name="noticeType"]').forEach(el => el.addEventListener("change", () => {
-  toggleSections();
-  updateEmployeeFields();
-  scrollToRelevantSection();
-}));
-document.querySelectorAll('input[name="isEmployee"]').forEach(el => el.addEventListener("change", updateEmployeeFields));
-
-function updateEmployeeFields(){
+function buildPayload(photoDataUrl){
   const type = noticeType();
-  const choice = document.querySelector('input[name="isEmployee"]:checked')?.value || "";
-  const employeeNameWrap = document.getElementById("employeeNameWrap");
-  const employeeName = document.getElementById("employeeName");
+  const fullName = document.getElementById("fullName").value.trim();
 
-  if(type === "Move Out" && choice === "Yes"){
-    employeeNameWrap.classList.remove("hidden");
-    employeeName.required = true;
-  } else {
-    employeeNameWrap.classList.add("hidden");
-    employeeName.required = false;
-    employeeName.value = "";
-  }
-}
-document.getElementById("moveOutDate").addEventListener("change", updateRentReminder);
-document.getElementById("mobileNumber").addEventListener("input", e => e.target.value = formatPhone(e.target.value));
-document.getElementById("showExampleBtn").addEventListener("click", () => {
-  if(EXAMPLE_IMAGE_URL && EXAMPLE_IMAGE_URL.indexOf("REPLACE_WITH") !== 0){
-    window.open(EXAMPLE_IMAGE_URL, "_blank");
-  } else {
-    alert("Add your example image URL first.");
-  }
-});
+  let signatureName = document.getElementById("signatureName").value.trim();
+  let signatureImage = document.getElementById("signatureImage").value;
 
-document.getElementById("unitPhoto").addEventListener("change", async (e) => {
-  const file = e.target.files && e.target.files[0];
-  if(!file){
-    unitPhotoData = "";
-    document.getElementById("photoPreviewWrap").style.display = "none";
-    return;
+  // Backend compatibility: older GS requires signature fields for Move Out.
+  // The UI does not require a signature for Move Out, so a harmless transparent image is sent.
+  if(type === "Move Out"){
+    signatureName = document.querySelector('input[name="isEmployee"]:checked')?.value === "Yes"
+      ? document.getElementById("employeeName").value.trim()
+      : fullName;
+    signatureImage = TRANSPARENT_SIGNATURE;
   }
-  try{
-    unitPhotoData = await fileToCompressedDataUrl(file, 1200, 0.68);
-    document.getElementById("photoPreview").src = unitPhotoData;
-    document.getElementById("photoPreviewWrap").style.display = "block";
-  }catch(err){
-    unitPhotoData = "";
-    status("Could not process the uploaded photo.");
-  }
-});
 
-// Signature
-const canvas = document.getElementById("signatureCanvas");
-const ctx = canvas.getContext("2d");
-let drawing = false;
-function resizeCanvas(){
-  const ratio = Math.max(window.devicePixelRatio || 1, 1);
-  const rect = canvas.getBoundingClientRect();
-  const displayWidth = Math.max(rect.width || canvas.parentElement.clientWidth || 300, 300);
-  canvas.width = displayWidth * ratio;
-  canvas.height = 180 * ratio;
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(ratio, ratio);
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "#111827";
-  clearCanvas();
-  hasSignature = false;
-}
-function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
-function getPos(e){
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-  return {x,y};
-}
-function startDraw(e){ drawing = true; hasSignature = true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); }
-function draw(e){ if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); }
-function endDraw(e){ drawing = false; e.preventDefault(); }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", endDraw);
-canvas.addEventListener("mouseleave", endDraw);
-canvas.addEventListener("touchstart", startDraw, {passive:false});
-canvas.addEventListener("touchmove", draw, {passive:false});
-canvas.addEventListener("touchend", endDraw, {passive:false});
-document.getElementById("clearSignature").addEventListener("click", () => { clearCanvas(); hasSignature = false; });
-toggleSections();
-updateEmployeeFields();
-
-document.getElementById("noticeForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const type = noticeType();
-  const data = {
+  return {
     noticeType: type,
-    fullName: fullName.value.trim(),
-    unitNumber: unitNumber.value.trim().padStart(5, "0"),
-    email: email.value.trim(),
-    mobileNumber: mobileNumber.value.trim(),
-    moveOutDate: moveOutDate.value,
+    fullName: fullName,
+    unitNumber: document.getElementById("unitNumber").value,
+    email: document.getElementById("email").value.trim(),
+    mobileNumber: document.getElementById("mobileNumber").value.trim(),
+    moveOutDate: document.getElementById("moveOutDate").value,
     allItemsRemoved: document.getElementById("allItemsRemoved").checked,
     lockRemoved: document.getElementById("lockRemoved").checked,
     trashRemoved: document.getElementById("trashRemoved").checked,
-    signatureName: signatureName.value.trim(),
-    signatureImage: hasSignature ? canvas.toDataURL("image/png") : "",
-    unitPhoto: unitPhotoData,
+    signatureName: signatureName,
+    signatureImage: signatureImage,
+    unitPhoto: photoDataUrl,
+    message: document.getElementById("message").value.trim(),
     isEmployee: document.querySelector('input[name="isEmployee"]:checked')?.value || "",
-    employeeName: (document.getElementById("employeeName")?.value || "").trim()
+    employeeName: document.getElementById("employeeName").value.trim(),
+    submittedAt: new Date().toISOString()
   };
+}
 
-  if(!type){ status("Please select a notice type."); return; }
-  if(!/^\d{5}$/.test(data.unitNumber) || parseInt(data.unitNumber,10) < 1 || parseInt(data.unitNumber,10) > 622 || UNAVAILABLE_UNITS.has(data.unitNumber)){
-    status("Please enter a valid available unit number."); return;
-  }
-  if(!validEmail(data.email)){ status("Please enter a valid email address."); return; }
+document.querySelectorAll('input[name="noticeType"]').forEach(el => el.addEventListener("change", setMode));
+document.querySelectorAll('input[name="isEmployee"]').forEach(el => el.addEventListener("change", updateEmployeeFields));
+document.getElementById("mobileNumber").addEventListener("input", e => e.target.value = formatPhone(e.target.value));
+document.getElementById("exampleBtn").addEventListener("click", ()=>{
+  const img = document.getElementById("exampleImg");
+  img.style.display = img.style.display === "block" ? "none" : "block";
+});
 
-  if(type === "Vacate Notice"){
-    if(!data.moveOutDate){ status("Please enter your planned move out date."); return; }
-    if(!data.allItemsRemoved || !data.lockRemoved || !data.trashRemoved){ status("Please complete all required acknowledgements."); return; }
-    if(!data.signatureName || !data.signatureImage){ status("Please provide your signature."); return; }
-  }
-  if(type !== "Vacate Notice" && !data.unitPhoto){ status("Please upload the required unit photo."); return; }
-  if(type === "Move Out"){
-    if(!data.isEmployee){ status("Please answer whether you are an employee of Aldine Storage."); return; }
-    if(data.isEmployee === "Yes" && !data.employeeName){ status("Please enter the employee name."); return; }
-  }
-  if(type === "Auction Sale"){
-    if(data.mobileNumber.replace(/\D/g,'').length !== 10){ status("Please enter a valid mobile number."); return; }
+canvas.addEventListener("mousedown", startDraw);
+canvas.addEventListener("mousemove", draw);
+window.addEventListener("mouseup", stopDraw);
+canvas.addEventListener("touchstart", startDraw, {passive:false});
+canvas.addEventListener("touchmove", draw, {passive:false});
+canvas.addEventListener("touchend", stopDraw);
+document.getElementById("clearSignature").addEventListener("click", clearSignature);
+window.addEventListener("resize", resizeCanvas);
+
+form.addEventListener("reset", ()=>{
+  setTimeout(()=>{
+    clearSignature();
+    document.querySelector('input[name="noticeType"][value="Vacate Notice"]').checked = true;
+    document.querySelectorAll('input[name="isEmployee"]').forEach(r=>r.checked=false);
+    setMode();
+    clearStatus();
+  },0);
+});
+
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  clearStatus();
+
+  const error = validate();
+  if(error){
+    setStatus(error,"error");
+    return;
   }
 
-  status("Submitting...", true);
+  if(!WEB_APP_URL || WEB_APP_URL.includes("REPLACE_WITH")){
+    setStatus("Google Apps Script Web App URL is missing in the HTML file.","error");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
   try{
+    const photoFile = document.getElementById("unitPhoto").files[0];
+    const photoDataUrl = await fileToDataUrl(photoFile);
+    const payload = buildPayload(photoDataUrl);
+
     const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: {"Content-Type":"text/plain;charset=utf-8"},
-      body: JSON.stringify(data)
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload)
     });
-    const json = await res.json();
-    if(json.ok){
-      noticeForm.style.display = "none";
-      successBox.style.display = "block";
-      status("");
-    }else{
-      status(json.error || "Submission failed.");
+
+    const text = await res.text();
+    let result = {};
+    try{ result = JSON.parse(text); }catch(_){}
+
+    if(!res.ok || result.ok === false){
+      throw new Error(result.message || text || "Submission failed.");
     }
+
+    setStatus(result.message || "Submission received successfully.","success");
+    form.reset();
+    window.scrollTo({top:0,behavior:"smooth"});
   }catch(err){
-    status("Submission failed.");
+    setStatus(err.message || "Submission failed. Please try again.","error");
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Notice";
   }
 });
+
+populateUnits();
+setMode();
 </script>
 </body>
 </html>
