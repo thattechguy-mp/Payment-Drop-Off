@@ -420,7 +420,7 @@ button{
   Execute as: Me
   Who has access: Anyone
 */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_EXmExolZ022Zr-2FgCwT0DSC_N3jOt6f70A5vaq8yvNcX9tAyVkrDZsAosswvvo/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwykokSeHiLn_Cf7jhZQ1sI6L1MEwdjs5tAedNaEDGRreO2WdQAgc8PBfBoLqvfNoK1VQ/exec";
 
 const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
 const TRANSPARENT_SIGNATURE =
@@ -669,6 +669,8 @@ function buildPayload(photoDataUrl){
     customerMobile: mobileNumber,
 
     moveOutDate: document.getElementById("moveOutDate").value,
+    dropOffDate: document.getElementById("moveOutDate").value || new Date().toISOString().slice(0,10),
+    noticeDate: document.getElementById("moveOutDate").value || new Date().toISOString().slice(0,10),
     allItemsRemoved: document.getElementById("allItemsRemoved").checked,
     lockRemoved: document.getElementById("lockRemoved").checked,
     trashRemoved: document.getElementById("trashRemoved").checked,
@@ -733,6 +735,7 @@ form.addEventListener("submit", async (e)=>{
     const photoFile = document.getElementById("unitPhoto").files[0];
     const photoDataUrl = await fileToDataUrl(photoFile);
     const payload = buildPayload(photoDataUrl);
+    payload.uploadFileName = photoFile.name || "uploaded-file";
 
     const postBody = new URLSearchParams();
     postBody.set("payload", JSON.stringify(payload));
