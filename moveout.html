@@ -635,12 +635,39 @@ function buildPayload(photoDataUrl){
     signatureImage = TRANSPARENT_SIGNATURE;
   }
 
+  const unitNumber = document.getElementById("unitNumber").value;
+  const email = document.getElementById("email").value.trim();
+  const mobileNumber = document.getElementById("mobileNumber").value.trim();
+  const employeeName = document.getElementById("employeeName").value.trim();
+  const isEmployee = document.querySelector('input[name="isEmployee"]:checked')?.value || "";
+
+  /*
+    Backend compatibility:
+    Older GS versions for this form have used different names for the same customer field.
+    Send every common alias so the current deployment cannot miss the name.
+  */
   return {
     noticeType: type,
+
+    // Name aliases
     fullName: fullName,
-    unitNumber: document.getElementById("unitNumber").value,
-    email: document.getElementById("email").value.trim(),
-    mobileNumber: document.getElementById("mobileNumber").value.trim(),
+    customerName: fullName,
+    customerFullName: fullName,
+    tenantName: fullName,
+    name: fullName,
+
+    // Unit aliases
+    unitNumber: unitNumber,
+    unit: unitNumber,
+
+    // Email / phone aliases
+    email: email,
+    customerEmail: email,
+    tenantEmail: email,
+    mobileNumber: mobileNumber,
+    phone: mobileNumber,
+    customerMobile: mobileNumber,
+
     moveOutDate: document.getElementById("moveOutDate").value,
     allItemsRemoved: document.getElementById("allItemsRemoved").checked,
     lockRemoved: document.getElementById("lockRemoved").checked,
@@ -648,9 +675,11 @@ function buildPayload(photoDataUrl){
     signatureName: signatureName,
     signatureImage: signatureImage,
     unitPhoto: photoDataUrl,
+    photo: photoDataUrl,
+    unitPhotoBase64: photoDataUrl,
     message: document.getElementById("message").value.trim(),
-    isEmployee: document.querySelector('input[name="isEmployee"]:checked')?.value || "",
-    employeeName: document.getElementById("employeeName").value.trim(),
+    isEmployee: isEmployee,
+    employeeName: employeeName,
     submittedAt: new Date().toISOString()
   };
 }
@@ -705,10 +734,17 @@ form.addEventListener("submit", async (e)=>{
     const photoDataUrl = await fileToDataUrl(photoFile);
     const payload = buildPayload(photoDataUrl);
 
+    const postBody = new URLSearchParams();
+    postBody.set("payload", JSON.stringify(payload));
+    Object.keys(payload).forEach(k => {
+      const v = payload[k];
+      postBody.set(k, typeof v === "boolean" ? String(v) : (v == null ? "" : String(v)));
+    });
+
     const res = await fetch(WEB_APP_URL, {
       method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload)
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:postBody.toString()
     });
 
     const text = await res.text();
