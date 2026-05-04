@@ -301,6 +301,8 @@ button{
 
     <div id="dynamicIntro" class="note"></div>
 
+    <div id="auctionDepositBox" class="note hidden"><strong>Deposit Amount:</strong> $250.00<br>Once submitted, the office will review and verify the unit is cleaned and ready before the deposit is returned.</div>
+
     <div id="employeeBox" class="employeeBox hidden full" style="margin-bottom:22px;">
       <label>Are you an employee of Aldine Storage? <span class="req">*</span></label>
       <div class="radioRow">
@@ -362,7 +364,7 @@ button{
       </div>
 
       <div id="auctionNotice" class="full note hidden">
-        Use this option only for auction sale or release-related communication with the office.
+        Use this option to request review of an auction unit after it has been cleaned for deposit return.
       </div>
 
       <div id="vacateChecks" class="full">
@@ -420,7 +422,7 @@ button{
   Execute as: Me
   Who has access: Anyone
 */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwykokSeHiLn_Cf7jhZQ1sI6L1MEwdjs5tAedNaEDGRreO2WdQAgc8PBfBoLqvfNoK1VQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyeCqXPHvaQk2oMfYYrF-23uFVuJpVjiZ_jjB6V3zXM5GDE-H8muGa0XAOHGbh6Le6HMQ/exec";
 
 const UNAVAILABLE_UNITS = new Set(["00143","00144","00145","00199","00258","00309","00320","00357","00378","00556"]);
 const TRANSPARENT_SIGNATURE =
@@ -461,6 +463,19 @@ function clearStatus(){
   statusBox.className = "status";
 }
 
+
+function updateExampleImageForMode(){
+  const img = document.getElementById("exampleImg");
+  const type = noticeType();
+  if(type === "Auction Sale" || type === "Move Out"){
+    img.src = "https://res.cloudinary.com/mytechguy/image/upload/v1777483916/Storage_Unit_Open_graphic_qy1v6l.png";
+    img.alt = "Example of empty cleaned storage unit with door open and unit number visible";
+  } else {
+    img.src = "https://res.cloudinary.com/mytechguy/image/upload/v1777489176/Storage_Unit_Closed_graphic_oxoecb.png";
+    img.alt = "Example image";
+  }
+}
+
 function setMode(){
   clearStatus();
   const type = noticeType();
@@ -470,16 +485,16 @@ function setMode(){
   document.getElementById("moveOutGraphic").classList.toggle("active", type === "Move Out");
   document.getElementById("auctionGraphic").classList.toggle("active", type === "Auction Sale");
 
-  document.getElementById("formTitle").textContent = type;
+  document.getElementById("formTitle").textContent = type === "Auction Sale" ? "Auction Sale - Deposit Return Request" : type;
   document.getElementById("formSubtitle").textContent =
     type === "Vacate Notice" ? "Provide written notice of your intended move out date." :
     type === "Move Out" ? "Confirm your unit is empty and ready for office verification." :
-    "Provide auction sale or release-related information for office review.";
+    "Deposit Return Request";
 
   document.getElementById("dynamicIntro").textContent =
     type === "Vacate Notice" ? "Use this option to provide written notice before your move out is completed." :
     type === "Move Out" ? "Submit this when your move out is complete. The office will verify the unit and issue your final move out receipt after verification." :
-    "Use this option only for auction sale or release-related communication with the office.";
+    "Use this option to request review of an auction unit after it has been cleaned for deposit return.";
 
   const isMove = type === "Move Out";
   const isVacate = type === "Vacate Notice";
@@ -491,21 +506,24 @@ function setMode(){
   document.getElementById("vacateNotice").classList.toggle("hidden", !isVacate);
   document.getElementById("moveNotice").classList.toggle("hidden", !isMove);
   document.getElementById("auctionNotice").classList.toggle("hidden", !isAuction);
+  document.getElementById("auctionDepositBox").classList.toggle("hidden", !isAuction);
   document.getElementById("vacateChecks").classList.toggle("hidden", !isVacate);
-  document.getElementById("signatureWrap").classList.toggle("hidden", !isVacate);
-  document.getElementById("signatureNameWrap").classList.toggle("hidden", !isVacate);
+  document.getElementById("signatureWrap").classList.toggle("hidden", !(isVacate || isAuction));
+  document.getElementById("signatureNameWrap").classList.toggle("hidden", !(isVacate || isAuction));
   document.getElementById("mobileReq").classList.toggle("hidden", !isAuction);
+  document.getElementById("fullNameLabel").innerHTML = isAuction ? 'Auction Buyer Name <span class="req">*</span>' : 'Customer Full Name <span class="req">*</span>';
 
   document.getElementById("moveOutDate").required = isVacate;
-  document.getElementById("signatureName").required = isVacate;
+  document.getElementById("signatureName").required = isVacate || isAuction;
   document.getElementById("mobileNumber").required = isAuction;
 
   document.getElementById("photoHelp").textContent =
     isVacate ? "Upload one clear photo if available showing the unit condition. This form requires an upload for confirmation records." :
     isMove ? "Upload one clear photo showing the empty cleaned unit with the door open and the unit number visible." :
-    "Upload one clear supporting photo or document related to the auction sale / release request.";
+    "Upload one clear photo showing the empty cleaned unit with the door open and the unit number visible above. Use “View Example” for reference.";
 
   updateEmployeeFields();
+  updateExampleImageForMode();
   resizeCanvas();
 }
 
@@ -546,7 +564,7 @@ function pos(e){
 }
 
 function startDraw(e){
-  if(noticeType() !== "Vacate Notice") return;
+  if(!(noticeType() === "Vacate Notice" || noticeType() === "Auction Sale")) return;
   e.preventDefault();
   drawing = true;
   hasSignature = true;
@@ -614,6 +632,9 @@ function validate(){
   if(type === "Auction Sale"){
     const mobileDigits = document.getElementById("mobileNumber").value.replace(/\D/g,"");
     if(mobileDigits.length !== 10) return "A valid mobile number is required for Auction Sale.";
+    if(!hasSignature || !document.getElementById("signatureName").value.trim()){
+      return "Signature and typed name are required for Auction Sale deposit return request.";
+    }
   }
 
   return "";
@@ -680,6 +701,8 @@ function buildPayload(photoDataUrl){
     photo: photoDataUrl,
     unitPhotoBase64: photoDataUrl,
     message: document.getElementById("message").value.trim(),
+    auctionDepositAmount: type === "Auction Sale" ? "250.00" : "",
+    depositAmount: type === "Auction Sale" ? "250.00" : "",
     isEmployee: isEmployee,
     employeeName: employeeName,
     submittedAt: new Date().toISOString()
